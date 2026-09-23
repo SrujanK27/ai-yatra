@@ -24,6 +24,7 @@ import { HERITAGE_MONUMENTS } from '../data/heritageData';
 export default function ResultPage({ 
   monument, 
   aiVerification, 
+  scannedImage,
   navigateTo, 
   onAskAiWithMonument,
   onSelectNearby 
@@ -31,6 +32,7 @@ export default function ResultPage({
   const [activeTab, setActiveTab] = useState('about'); // 'about' | 'architecture' | 'epigraphs' | 'map'
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [viewScannedPhoto, setViewScannedPhoto] = useState(Boolean(scannedImage));
 
   // Fallback to Badami Cave 1 if accessed directly
   const data = monument || HERITAGE_MONUMENTS[0];
@@ -79,43 +81,99 @@ export default function ResultPage({
         </div>
       </div>
 
-      {/* AI Identification Banner */}
-      <div className="bg-canvas-card rounded-2xl p-4 sm:p-5 border border-gold/50 shadow-ai-bloom flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gold/20 text-gold-deep flex items-center justify-center shrink-0 border border-gold/40">
-            <Sparkles className="w-5 h-5 text-gold animate-spin-slow" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-gold-deep">
-                ✨ Identified by AI
-              </span>
-              <span className="text-[11px] text-umber-light font-mono">
-                • {data.period}
-              </span>
+      {/* AI Identification & Live Verification Banner */}
+      <div className="bg-canvas-card rounded-2xl p-4 sm:p-5 border border-gold/50 shadow-ai-bloom space-y-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gold/20 text-gold-deep flex items-center justify-center shrink-0 border border-gold/40">
+              <Sparkles className="w-5 h-5 text-gold animate-spin-slow" />
             </div>
-            <p className="text-xs text-umber-light mt-0.5">
-              Matched against the Chalukyan Epigraphical & Archaeological Index
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-sm text-gold-deep">
+                  {aiVerification?.badgeText || '✨ Identified by AI'}
+                </span>
+                <span className="text-[11px] text-umber-light font-mono">
+                  • {data.period}
+                </span>
+                {aiVerification?.model && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-sandstone-200 text-umber font-mono border border-sandstone-300">
+                    {aiVerification.model}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-umber-light mt-0.5">
+                Matched against the Chalukyan Epigraphical & Archaeological Index
+              </p>
+            </div>
           </div>
+
+          <button
+            onClick={() => onAskAiWithMonument(data)}
+            className="w-full sm:w-auto px-4 py-2 rounded-stone bg-umber hover:bg-umber-dark text-sandstone-50 text-xs font-semibold flex items-center justify-center gap-2 border border-gold/40 shadow-sm transition-all"
+          >
+            <MessageSquareQuote className="w-3.5 h-3.5 text-gold-light" />
+            <span>Ask AI About This Site</span>
+          </button>
         </div>
 
-        <button
-          onClick={() => onAskAiWithMonument(data)}
-          className="w-full sm:w-auto px-4 py-2 rounded-stone bg-umber hover:bg-umber-dark text-sandstone-50 text-xs font-semibold flex items-center justify-center gap-2 border border-gold/40 shadow-sm transition-all"
-        >
-          <MessageSquareQuote className="w-3.5 h-3.5 text-gold-light" />
-          <span>Ask AI About This Site</span>
-        </button>
+        {/* Live Detected Features Chips */}
+        {aiVerification?.featuresDetected && aiVerification.featuresDetected.length > 0 && (
+          <div className="pt-2 border-t border-gold/20">
+            <span className="text-[11px] font-bold text-umber uppercase tracking-wider block mb-1.5">
+              🔍 Vision Features Identified from Image:
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {aiVerification.featuresDetected.map((feat, idx) => (
+                <span
+                  key={idx}
+                  className="px-2.5 py-1 rounded-md text-xs bg-amber-500/10 text-amber-950 font-medium border border-amber-500/30 flex items-center gap-1.5"
+                >
+                  <span className="text-terracotta font-bold">✓</span>
+                  {feat}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Monument Hero Image & Title Card */}
       <div className="bg-canvas-card rounded-3xl overflow-hidden border border-sandstone-300 shadow-warm-md">
         
+        {/* Photo View Controls if user scanned their own image */}
+        {scannedImage && (
+          <div className="bg-sandstone-200/80 px-4 py-2 flex items-center justify-between border-b border-sandstone-300 text-xs">
+            <span className="text-umber-light font-medium">Image View:</span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewScannedPhoto(true)}
+                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
+                  viewScannedPhoto
+                    ? 'bg-terracotta text-white shadow-xs'
+                    : 'bg-canvas text-umber hover:bg-sandstone-300'
+                }`}
+              >
+                📸 Your Scanned Photo
+              </button>
+              <button
+                onClick={() => setViewScannedPhoto(false)}
+                className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
+                  !viewScannedPhoto
+                    ? 'bg-terracotta text-white shadow-xs'
+                    : 'bg-canvas text-umber hover:bg-sandstone-300'
+                }`}
+              >
+                🏛️ Catalog Master
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Large Hero Image */}
         <div className="relative aspect-[16/9] sm:aspect-[21/9] bg-sandstone-300">
           <img
-            src={data.image}
+            src={viewScannedPhoto && scannedImage ? scannedImage : data.image}
             alt={data.name}
             className="w-full h-full object-cover"
           />
@@ -127,6 +185,11 @@ export default function ResultPage({
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-terracotta text-white shadow-sm">
                 {data.region}
               </span>
+              {viewScannedPhoto && scannedImage && (
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-sm">
+                  Live User Upload
+                </span>
+              )}
               {data.isUnesco && (
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-umber-dark shadow-sm">
                   UNESCO World Heritage

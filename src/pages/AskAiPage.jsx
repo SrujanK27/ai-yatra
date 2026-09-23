@@ -58,6 +58,30 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
         'What is the meaning of the coiled Nagaraja ceiling carving?',
         'Who was King Mangalesha?'
       ];
+    } else if (activeMonument.id === 'badami-cave-2') {
+      return [
+        'Describe the cosmic stride of Vishnu Trivikrama in Cave 2',
+        'What is the significance of the Varaha rescue panel?',
+        'What ceiling motifs and ganas are carved here?'
+      ];
+    } else if (activeMonument.id === 'badami-cave-3') {
+      return [
+        'What does the 578 CE Mangalesha foundation inscription say?',
+        'Explain the seated Maha Vishnu on Adisesha carving',
+        'Why is Cave 3 considered the masterpiece of Badami?'
+      ];
+    } else if (activeMonument.id === 'badami-cave-4') {
+      return [
+        'Who are the Jain Tirthankaras carved inside Cave 4?',
+        'Explain the figure of Bahubali with entwining creepers',
+        'What does Cave 4 tell us about Chalukya religious harmony?'
+      ];
+    } else if (activeMonument.id === 'badami-caves-general') {
+      return [
+        'Give me an overview of all 4 Badami rock-cut caves',
+        'What is the historical significance of ancient Vatapi?',
+        'What is the best route and time of day to visit the caves?'
+      ];
     } else if (activeMonument.id === 'pattadakal-virupaksha') {
       return [
         'Why was Pattadakal chosen for Chalukya royal coronations?',

@@ -13,6 +13,8 @@ export default function App() {
   // Navigation State
   const [currentRoute, setCurrentRoute] = useState('home'); // 'home' | 'scan' | 'result' | 'ask-ai' | 'explore'
   const [selectedMonument, setSelectedMonument] = useState(HERITAGE_MONUMENTS[0]);
+  const [scanVerification, setScanVerification] = useState(null);
+  const [scannedImage, setScannedImage] = useState(null);
   const [activeLanguage, setActiveLanguage] = useState('EN');
 
   // Navigation handlers
@@ -24,12 +26,16 @@ export default function App() {
   // Called when AI Scan completes successfully
   const handleScanSuccess = (scanResult) => {
     setSelectedMonument(scanResult.monument);
+    setScanVerification(scanResult.aiVerification || null);
+    setScannedImage(scanResult.scannedImage || null);
     navigateTo('result');
   };
 
   // Called when user selects a monument card anywhere
   const handleSelectMonument = (monument) => {
     setSelectedMonument(monument);
+    setScanVerification(null);
+    setScannedImage(null);
     navigateTo('result');
   };
 
@@ -78,6 +84,8 @@ export default function App() {
         {currentRoute === 'result' && (
           <ResultPage
             monument={selectedMonument}
+            aiVerification={scanVerification}
+            scannedImage={scannedImage}
             navigateTo={navigateTo}
             onAskAiWithMonument={handleAskAiWithMonument}
             onSelectNearby={handleSelectNearby}

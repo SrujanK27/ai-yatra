@@ -72,8 +72,291 @@ export const HERITAGE_MONUMENTS = [
     ],
     nearbyAttractions: [
       { id: 'badami-cave-2', name: 'Badami Cave 2 (Vishnu Trivikrama)', distance: '150 m' },
-      { id: 'bhutanatha-group', name: 'Bhutanatha Group of Temples', distance: '600 m' },
-      { id: 'agastya-lake', name: 'Agastya Teertha & Fort', distance: '400 m' }
+      { id: 'badami-cave-3', name: 'Badami Cave 3 (Maha Vishnu)', distance: '250 m' },
+      { id: 'bhutanatha-temples', name: 'Bhutanatha Group of Temples', distance: '600 m' }
+    ]
+  },
+  {
+    id: 'badami-cave-2',
+    name: 'Badami Cave Temples — Cave 2 (Vishnu Trivikrama)',
+    aliases: ['Badami Cave 2', 'Cave 2 Vishnu', 'Trivikrama Cave Badami', 'Badami Rock-Cut Cave 2'],
+    kannadaName: 'ಬಾದಾಮಿ ಗುಹೆ ೨ (ತ್ರಿವಿಕ್ರಮ ಶಿಲ್ಪ)',
+    location: 'Badami, Bagalkote District',
+    region: 'Badami',
+    category: 'Cave Temples',
+    coordinates: { lat: 15.9192, lng: 75.6772 },
+    period: 'Early Chalukya Dynasty (Late 6th Century CE, c. 578 CE)',
+    historicalSignificance: 'Dedicated to Lord Vishnu, Cave 2 is renowned for its monumental relief panels of Vishnu in his cosmic Trivikrama (Vamana) and Varaha (boar) avatars, excavated high in the red sandstone cliff above Cave 1.',
+    distinctiveArchitecturalFeatures: [
+      'Colossal Trivikrama relief depicting Vishnu conquering the cosmos with his raised left foot',
+      'Varaha avatar rescue panel carrying Bhudevi (Earth goddess) from the cosmic ocean',
+      'Ceiling panels featuring Svastika motifs, celestial Vidyadharas, and sixteen-spoked wheel (Ananta chakra)',
+      'Square veranda with decorative carved dwarapalas guarding the entrance'
+    ],
+    keyStructures: [
+      'Trivikrama Panel (Cosmic stride)',
+      'Varaha Avatar Relief',
+      'Pillared Sabhamantapa with lotus medallion ceiling',
+      'Square Garbhagriha'
+    ],
+    architecturalStyle: 'Rock-Cut Chalukyan Vaishnava Shrine',
+    builder: 'Early Chalukya Dynasty (Mangalesha / Kirtivarman I)',
+    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+    tags: ['Cave Temples', 'Rock-Cut', 'Vishnu Trivikrama', 'Early Chalukya', 'Vaishnava'],
+    isUnesco: false,
+    audioGuide: {
+      duration: '3 min 15 sec',
+      title: 'The Cosmic Stride of Trivikrama',
+      narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
+      transcript: 'Perched higher up the cliff face, Cave 2 is dedicated to Lord Vishnu. The right wall of the veranda is dominated by the colossal panel of Trivikrama, depicting the moment Vishnu expands to cosmic proportions and steps across the heavens. Notice the intricate frieze of playful ganas and celestial couples carved across the ceiling beams.'
+    },
+    about: 'Located east of Cave 1, Cave 2 is smaller in scale but remarkably rich in Vaishnavite iconography. Its facade features fluted sandstone columns and dramatic narrative reliefs portraying the cosmic avatars of Vishnu.',
+    architecture: {
+      overview: 'Reached by a flight of 64 stone-hewn steps from Cave 1, featuring a pillared veranda, four square interior columns, and a square inner sanctum.',
+      highlights: [
+        {
+          title: 'Trivikrama Cosmic Panel',
+          description: 'Dynamic relief showing Vishnu raising his left leg to the heavens to measure the cosmos, flanked by celestial musicians.'
+        },
+        {
+          title: 'Varaha Boar Incarnation',
+          description: 'Powerful bas-relief depicting Lord Varaha rescuing Goddess Earth (Bhudevi) from the depths of the cosmic waters.'
+        },
+        {
+          title: 'Carved Ceiling Medallions',
+          description: 'Intricate ceiling bays displaying floral rosettes, swastika friezes, and flying gandharvas.'
+        }
+      ]
+    },
+    didYouKnow: [
+      'The ceiling friezes of Cave 2 depict scenes from the churning of the ocean (Samudra Manthana).',
+      'The base frieze features over fifty whimsical dwarfish attendants (ganas) carved in diverse playful postures.'
+    ],
+    epigraphs: [
+      {
+        language: 'Old Kannada / Halegannada',
+        text: 'ಶ್ರೀ ವಿಷ್ಣುಪಾದ ಪದ್ಮೋಪಜೀವಿ...',
+        translation: 'Dedicated to the lotus feet of the supreme preserver Vishnu by the Chalukya royal patrons.'
+      }
+    ],
+    nearbyAttractions: [
+      { id: 'badami-cave-1', name: 'Badami Cave 1 (Nataraja)', distance: '150 m' },
+      { id: 'badami-cave-3', name: 'Badami Cave 3 (Maha Vishnu)', distance: '100 m' },
+      { id: 'bhutanatha-temples', name: 'Bhutanatha Temples', distance: '650 m' }
+    ]
+  },
+  {
+    id: 'badami-cave-3',
+    name: 'Badami Cave Temples — Cave 3 (Maha Vishnu & Royal Inscription)',
+    aliases: ['Badami Cave 3', 'Cave 3 Maha Vishnu', 'Mangalesha Cave', 'Largest Badami Cave', 'Badami Rock-Cut Cave 3'],
+    kannadaName: 'ಬಾದಾಮಿ ಗುಹೆ ೩ (ಮಹಾ ವಿಷ್ಣು ಹಾಗೂ ಶಾಸನ)',
+    location: 'Badami, Bagalkote District',
+    region: 'Badami',
+    category: 'Cave Temples',
+    coordinates: { lat: 15.9195, lng: 75.6778 },
+    period: 'Early Chalukya Dynasty (Firmly dated 578 CE / Saka 500)',
+    historicalSignificance: 'The largest, most complex, and most exquisitely sculpted cave sanctuary at Badami. Contains the crucial royal foundation inscription of King Mangalesha dated Saka 500 (578 CE), providing the vital chronological anchor for Early Chalukyan art history.',
+    distinctiveArchitecturalFeatures: [
+      'Colossal high-relief seated Maha Vishnu on the coiled serpent Shesha (Anantasayana)',
+      'Spectacular standing royal Narasimha (man-lion) with resting regal posture',
+      'Dated royal foundation inscription of King Mangalesha (578 CE) on the veranda column',
+      'Traces of original 6th-century classical wall paintings and ceiling murals',
+      'Intricately carved bracket figures (Mithunas and bracket salabhanjikas)'
+    ],
+    keyStructures: [
+      'Seated Maha Vishnu on Adisesha',
+      'Standing Royal Narasimha Relief',
+      'Mangalesha 578 CE Foundation Inscription Column',
+      'Harihara and Varaha Panels',
+      'Traces of 6th Century Chalukyan Frescoes'
+    ],
+    architecturalStyle: 'Masterpiece Rock-Cut Chalukyan Architecture',
+    builder: 'King Mangalesha (Under King Kirtivarman I)',
+    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+    tags: ['Cave Temples', 'Rock-Cut', 'Maha Vishnu', '578 CE Inscription', 'Masterpiece'],
+    isUnesco: false,
+    audioGuide: {
+      duration: '4 min 10 sec',
+      title: 'Grandeur of the 578 CE Royal Vishnu Sanctuary',
+      narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
+      transcript: 'Welcome to Cave 3, the monumental masterpiece of Badami. Carved into the sandstone cliff in 578 CE by King Mangalesha, this is the only cave bearing an exact astronomical Saka date inscription. Marvel at the grand seated Vishnu resting majestically on the coils of serpent Shesha.'
+    },
+    about: 'Cave 3 is the largest and most ornate of the Badami rock-cut sanctuaries. It represents the pinnacle of early Chalukyan sculptural genius, adorned with colossal avatar sculptures and the historical Mangalesha foundation inscription.',
+    architecture: {
+      overview: 'Massive excavated cavern featuring a pillared veranda nearly 70 feet wide, a grand sabhamantapa with sculpted bracket figures, and a deep square inner sanctum.',
+      highlights: [
+        {
+          title: 'Seated Maha Vishnu on Shesha',
+          description: 'A colossal high-relief masterwork showing eight-armed Vishnu seated regally upon the five-hooded cosmic serpent.'
+        },
+        {
+          title: 'Standing Royal Narasimha',
+          description: 'Unique representation of the lion-man incarnation standing in an elegant tribhanga posture resting his left hand on his mace.'
+        },
+        {
+          title: 'Dated Mangalesha Inscription (578 CE)',
+          description: 'Epigraph on the veranda pillar recording the creation of this "Vishnu-griha" in Saka year 500 during the full moon of Kartika.'
+        }
+      ]
+    },
+    didYouKnow: [
+      'The Saka 500 (578 CE) inscription in Cave 3 is one of the oldest firmly dated stone inscriptions in Karnataka history.',
+      'Faint traces of 6th-century painted frescoes survive on the ceiling, representing some of the earliest post-Ajanta classical Indian paintings.'
+    ],
+    epigraphs: [
+      {
+        language: 'Sanskrit in Chalukya-Brahmi script',
+        text: 'ಸ್ವಸ್ತಿ ಶ್ರೀಮತ್ ಪ್ರವರ್ಧಮಾನ ರಾಜ್ಯ ಸಂವತ್ಸರೇ ಶಕ ನೃಪತೌ ಪಂಚಸು ಶಕೇಷ್ವತೀತೇಷು...',
+        translation: 'In the victorious reign of King Mangalesha, in the year 500 of the Saka era, this temple of Vishnu was consecrated.'
+      }
+    ],
+    nearbyAttractions: [
+      { id: 'badami-cave-2', name: 'Badami Cave 2 (Vishnu Trivikrama)', distance: '100 m' },
+      { id: 'badami-cave-4', name: 'Badami Cave 4 (Jain Sanctuary)', distance: '120 m' },
+      { id: 'bhutanatha-temples', name: 'Bhutanatha Temples', distance: '700 m' }
+    ]
+  },
+  {
+    id: 'badami-cave-4',
+    name: 'Badami Cave Temples — Cave 4 (Jain Sanctuary)',
+    aliases: ['Badami Cave 4', 'Jaina Cave Badami', 'Parshvanatha Cave', 'Cave 4 Mahavira', 'Badami Rock-Cut Cave 4'],
+    kannadaName: 'ಬಾದಾಮಿ ಗುಹೆ ೪ (ಜೈನ ತೀರ್ಥಂಕರ ಗುಹೆ)',
+    location: 'Badami, Bagalkote District',
+    region: 'Badami',
+    category: 'Cave Temples',
+    coordinates: { lat: 15.9198, lng: 75.6784 },
+    period: 'Early Chalukya Dynasty (Late 6th to 7th Century CE)',
+    historicalSignificance: 'The easternmost and highest cave sanctuary at Badami, dedicated to Jainism. Reflects the deep religious pluralism and royal patronage extended to Jain monks and scholars by the Chalukya emperors.',
+    distinctiveArchitecturalFeatures: [
+      'Life-size seated Tirthankara Mahavira on a lion throne inside the inner sanctum',
+      'Deep relief of 23rd Tirthankara Parshvanatha sheltered by the multi-hooded Dharanendra serpent king',
+      'Standing Bahubali (Gommata) meditation relief with entwining forest creepers around his legs',
+      'Intricately detailed pillar capitals and tiered Tirthankara friezes along the hall walls'
+    ],
+    keyStructures: [
+      'Sanctum Mahavira on Lion Throne',
+      'Parshvanatha with Dharanendra Serpent Hood',
+      'Bahubali (Gommata) Meditation Relief',
+      'Pillared Hall with Tirthankara Wall Friezes'
+    ],
+    architecturalStyle: 'Rock-Cut Chalukyan Jain Shrine',
+    builder: 'Early Chalukya Dynasty Patrons & Jain Scholars',
+    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+    tags: ['Cave Temples', 'Rock-Cut', 'Jain Heritage', 'Parshvanatha', 'Bahubali'],
+    isUnesco: false,
+    audioGuide: {
+      duration: '3 min 20 sec',
+      title: 'Serenity of the Tirthankara Sanctuary',
+      narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
+      transcript: 'Perched at the highest eastern end of the cliff, Cave 4 is dedicated to Jain Tirthankaras. Gaze upon the serene figure of Parshvanatha sheltered by the protective coils of the serpent king Dharanendra, and opposite him, Bahubali in deep meditation with climbing forest vines.'
+    },
+    about: 'Cave 4 is the latest of the four rock-cut sanctuaries, carved high into the cliff face overlooking Agastya Lake. It houses intricate carvings of Jain Tirthankaras, celebrating non-violence, asceticism, and spiritual liberation.',
+    architecture: {
+      overview: 'Pillared entrance veranda leading into a columned hall lined with Jain reliefs and an elevated sanctum containing Lord Mahavira.',
+      highlights: [
+        {
+          title: 'Tirthankara Parshvanatha',
+          description: 'A deeply carved relief of the 23rd Tirthankara protected under the five-hooded canopy of Dharanendra Yaksha.'
+        },
+        {
+          title: 'Bahubali (Gommata) in Kayotsarga',
+          description: 'The standing prince in supreme meditation, with forest creepers climbing around his legs and attended by his sisters.'
+        },
+        {
+          title: 'Mahavira Lion Throne Sanctum',
+          description: 'Central sanctum idol seated in padmasana upon an ornate simhasana (lion throne) flanked by chauri bearers.'
+        }
+      ]
+    },
+    didYouKnow: [
+      'Cave 4 stands as evidence of the harmonious coexistence of Shaivism, Vaishnavism, and Jainism under Early Chalukya rule.',
+      'The vantage point outside Cave 4 offers a panoramic view across the entire Agastya Lake and the North Fort.'
+    ],
+    epigraphs: [
+      {
+        language: 'Halegannada (Old Kannada)',
+        text: 'ಶ್ರೀ ಜಿನೇಂದ್ರಾಯ ನಮಃ...',
+        translation: 'Salutations to the victorious Jinendra who guides souls across the ocean of worldly existence.'
+      }
+    ],
+    nearbyAttractions: [
+      { id: 'badami-cave-3', name: 'Badami Cave 3 (Maha Vishnu)', distance: '120 m' },
+      { id: 'bhutanatha-temples', name: 'Bhutanatha Temples', distance: '600 m' },
+      { id: 'badami-caves-general', name: 'Badami Rock-Cut Cave Complex', distance: '150 m' }
+    ]
+  },
+  {
+    id: 'badami-caves-general',
+    name: 'Badami Rock-Cut Cave Temples Complex',
+    aliases: ['Badami Caves', 'Vatapi Caves', 'Badami Rock Cut Complex', 'Agastya Cliffs', 'Badami Cave Temples Ensemble'],
+    kannadaName: 'ಬಾದಾಮಿ ಗುಹಾಂತರ ದೇವಾಲಯಗಳ ಸಮುಚ್ಛಯ',
+    location: 'Badami, Bagalkote District',
+    region: 'Badami',
+    category: 'Cave Temples',
+    coordinates: { lat: 15.9193, lng: 75.6775 },
+    period: 'Early Chalukya Dynasty (c. 578 – 700 CE)',
+    historicalSignificance: 'The ancient capital of the Early Chalukya empire (Vatapi), featuring four rock-cut cave sanctuaries (Caves 1–4) carved directly into sheer red sandstone cliffs overlooking Agastya Lake, celebrating Shaivite, Vaishnavite, and Jain spiritual traditions.',
+    distinctiveArchitecturalFeatures: [
+      'Four rock-cut monolithic sanctuaries hollowed out of sheer red sandstone cliff faces',
+      'Progressive architectural layout spanning Shaiva (Cave 1), Vaishnava (Caves 2 & 3), and Jaina (Cave 4) traditions',
+      'Panoramic cliff setting overlooking the sacred waters of Agastya Teertha and Bhutanatha gorge',
+      'Iconic Early Chalukyan pillar styles with fluted shafts, ornate brackets, and ceiling medallions'
+    ],
+    keyStructures: [
+      'Cave 1 (18-armed Nataraja & Ardhanarishwara)',
+      'Cave 2 (Vishnu Trivikrama & Varaha)',
+      'Cave 3 (Maha Vishnu & 578 CE Mangalesha Inscription)',
+      'Cave 4 (Jain Tirthankaras Parshvanatha & Mahavira)',
+      'Agastya Teertha Lake Basin'
+    ],
+    architecturalStyle: 'Early Chalukyan Rock-Cut Monolithic Complex',
+    builder: 'Chalukya Kings Pulakeshin I, Kirtivarman I & Mangalesha',
+    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+    tags: ['Cave Temples', 'Rock-Cut', 'Vatapi Capital', 'Early Chalukya', 'Agastya Lake'],
+    isUnesco: false,
+    audioGuide: {
+      duration: '4 min 00 sec',
+      title: 'The Rock-Cut Capital of the Chalukyas',
+      narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
+      transcript: 'Welcome to the legendary cliff sanctuaries of Badami, once known as Vatapi, the 6th-century capital of the Early Chalukya dynasty. Carved tier upon tier into monumental red sandstone cliffs, these four cave temples embody the artistic zenith of ancient Karnataka rock-hewn engineering.'
+    },
+    about: 'Badami was the capital of the Early Chalukyas from 540 to 757 CE. The four cave temples excavated from the steep southern cliffs represent an extraordinary transition in Indian architecture from cave excavation to free-standing structural design.',
+    architecture: {
+      overview: 'Four numbered rock-cut caves rising sequentially from the foot of the hill to the cliff crest, each with an open veranda, columned sabhamantapa, and sanctum chamber.',
+      highlights: [
+        {
+          title: 'Monolithic Cliff Architecture',
+          description: 'Hollowed directly from vertical sandstone bluffs without any jointed blocks or mortar.'
+        },
+        {
+          title: 'Tri-Religious Harmony',
+          description: 'A unique ensemble where Shaiva, Vaishnava, and Jaina traditions were patronized side-by-side by the same dynasty.'
+        },
+        {
+          title: 'Agastya Lake Panorama',
+          description: 'Spectacular cliff terraces framing the green waters of Agastya Teertha and the distant Bhutanatha temples.'
+        }
+      ]
+    },
+    didYouKnow: [
+      'Badami was anciently named Vatapi after the sage Agastya legend and the demon Vatapi.',
+      'The red sandstone of Badami was formed hundreds of millions of years ago in the Kaladgi geological basin.'
+    ],
+    epigraphs: [
+      {
+        language: 'Sanskrit in Old Kannada Script',
+        text: 'ಶ್ರೀ ವಾತಾಪ್ಯಧಿಷ್ಠಾನೇ ಚಾಳುಕ್ಯ ವಂಶೋದ್ಭವ...',
+        translation: 'In the great capital fortress of Vatapi, the kings of the Chalukya lineage established their glorious realm.'
+      }
+    ],
+    nearbyAttractions: [
+      { id: 'bhutanatha-temples', name: 'Bhutanatha Group of Temples', distance: '600 m' },
+      { id: 'mahakuta-complex', name: 'Mahakuta Spring Complex', distance: '12 km' },
+      { id: 'pattadakal-virupaksha', name: 'Pattadakal UNESCO Complex', distance: '14 km' }
     ]
   },
   {
@@ -547,15 +830,24 @@ export function getHeritageKnowledgeContext(queryOptions = {}) {
     matched = HERITAGE_MONUMENTS.find(m => m.id === monumentHintId);
   }
 
-  // 2. Query or alias text match
+  // 2. Query or alias text match (High priority: ID, Name, Aliases, Tags)
   if (!matched && query) {
     const q = query.toLowerCase().trim();
     matched = HERITAGE_MONUMENTS.find(m => 
-      m.name.toLowerCase().includes(q) ||
       m.id.toLowerCase() === q ||
+      m.name.toLowerCase().includes(q) ||
       (m.aliases && m.aliases.some(a => a.toLowerCase().includes(q))) ||
-      m.region.toLowerCase().includes(q)
+      (m.tags && m.tags.some(t => t.toLowerCase().includes(q)))
     );
+
+    // Secondary fallback: distinctive features and structures
+    if (!matched) {
+      matched = HERITAGE_MONUMENTS.find(m => 
+        (m.distinctiveArchitecturalFeatures && m.distinctiveArchitecturalFeatures.some(f => f.toLowerCase().includes(q))) ||
+        (m.keyStructures && m.keyStructures.some(k => k.toLowerCase().includes(q))) ||
+        m.region.toLowerCase().includes(q)
+      );
+    }
   }
 
   // 3. Proximity match if GPS coordinates provided (within Bagalkote region ~60km)
@@ -575,23 +867,34 @@ export function getHeritageKnowledgeContext(queryOptions = {}) {
     }
   }
 
-  // Fallback to primary heritage reference
-  matched = matched || HERITAGE_MONUMENTS[0];
-
-  // Concise prompt-ready context string for future Gemini integration
-  const promptContextText = [
-    `Trusted Bagalkote Heritage Knowledge Context:`,
-    `- Monument: ${matched.name} (Aliases: ${matched.aliases?.join(', ') || 'N/A'})`,
-    `- Dynasty & Era: ${matched.period} | Patrons: ${matched.builder}`,
-    `- Architectural Style: ${matched.architecturalStyle}`,
-    `- Significance: ${matched.historicalSignificance}`,
-    `- Distinctive Architectural Features: ${matched.distinctiveArchitecturalFeatures?.join('; ')}`,
-    `- Key Structures in Cluster: ${matched.keyStructures?.join(', ')}`,
-    `- Location: ${matched.location} (${matched.coordinates.lat}°N, ${matched.coordinates.lng}°E)`
-  ].join('\n');
+  // If no specific match, provide neutral general Bagalkote circuit knowledge
+  let promptContextText = '';
+  if (matched) {
+    promptContextText = [
+      `Trusted Bagalkote Heritage Knowledge Context:`,
+      `- Monument: ${matched.name} (Aliases: ${matched.aliases?.join(', ') || 'N/A'})`,
+      `- Dynasty & Era: ${matched.period} | Patrons: ${matched.builder}`,
+      `- Architectural Style: ${matched.architecturalStyle}`,
+      `- Significance: ${matched.historicalSignificance}`,
+      `- Distinctive Architectural Features: ${matched.distinctiveArchitecturalFeatures?.join('; ')}`,
+      `- Key Structures in Cluster: ${matched.keyStructures?.join(', ')}`,
+      `- Location: ${matched.location} (${matched.coordinates.lat}°N, ${matched.coordinates.lng}°E)`
+    ].join('\n');
+  } else {
+    promptContextText = [
+      `Bagalkote Heritage Circuit Reference Knowledge:`,
+      `- Badami Rock-Cut Caves (578 CE): Cave 1 (Nataraja & Harihara), Cave 2 (Vishnu Trivikrama & Varaha), Cave 3 (Maha Vishnu & 578 CE Mangalesha Inscription), Cave 4 (Jain Tirthankara Parshvanatha & Mahavira), or general Badami cliffs.`,
+      `- Pattadakal (c. 740 CE, UNESCO): Virupaksha temple, Southern Dravida Vimana, epic friezes, monolithic Nandi pavilion.`,
+      `- Aihole (c. 680-720 CE): Durga Temple apsidal Gajaprishta colonnade, Rekha-Nagara tower.`,
+      `- Bhutanatha (7th-11th CE): Sandstone waterside shrines on Agastya Lake.`,
+      `- Mahakuta (Late 6th CE): Pushkarini spring pool with submerged 5-faced Shiva linga.`,
+      `- Kudalasangama (12th CE): Sangameshwara temple & Aikya Mantapa at Krishna-Malaprabha confluence.`,
+      `- Banashankari (7th-18th CE): Haridra Tirtha reservoir with triple Deepa Stambha lamp towers.`
+    ].join('\n');
+  }
 
   return {
-    matchedMonument: matched,
+    matchedMonument: matched || HERITAGE_MONUMENTS[0],
     allMonuments: HERITAGE_MONUMENTS,
     promptContextText
   };

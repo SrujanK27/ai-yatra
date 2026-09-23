@@ -1,33 +1,127 @@
-import React, { useRef } from 'react';
-import { Camera, Upload, Sparkles, Image as ImageIcon } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Camera, Upload, Sparkles, Image as ImageIcon, Smartphone } from 'lucide-react';
 import { SAMPLE_SCANS } from '../../data/sampleScans';
+
+const MAX_IMAGE_DIM = 1024;
+const JPEG_QUALITY = 0.8;
+
+/**
+ * Reads a file as Data URL
+ */
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Failed to read image file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Compresses image using HTML5 Canvas (max 1024px, JPEG 0.8)
+ * Ensures fast upload, no timeout, and clean base64 encoding.
+ */
+function compressImage(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let { width, height } = img;
+
+      if (width > MAX_IMAGE_DIM || height > MAX_IMAGE_DIM) {
+        const ratio = Math.min(MAX_IMAGE_DIM / width, MAX_IMAGE_DIM / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const jpegDataUrl = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
+      const base64 = jpegDataUrl.split(',')[1];
+      resolve({
+        dataUrl: jpegDataUrl,
+        base64,
+        dimensions: `${width} × ${height} px`
+      });
+    };
+    img.onerror = () => reject(new Error('Failed to process image.'));
+    img.src = dataUrl;
+  });
+}
 
 export default function CameraViewfinder({
   onImageSelected,
   onSampleSelected,
   onTriggerFailureDemo
 }) {
-  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        onImageSelected({
-          src: event.target?.result,
-          name: file.name,
-          size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-          type: file.type,
-          monumentHintId: 'badami-cave-1' // Default target for uploaded custom image
-        });
-      };
-      reader.readAsDataURL(file);
+  const handleFile = async (file) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file.');
+      return;
     }
+
+    try {
+      setIsProcessing(true);
+      const rawDataUrl = await readFileAsDataURL(file);
+      const { dataUrl, base64, dimensions } = await compressImage(rawDataUrl);
+
+      onImageSelected({
+        src: dataUrl,
+        base64: base64,
+        name: file.name || 'Captured_Photo.jpg',
+        size: `${((base64.length * 0.75) / 1024).toFixed(1)} KB (Optimized)`,
+        dimensions: dimensions,
+        type: 'image/jpeg',
+        monumentHintId: null
+      });
+    } catch (err) {
+      console.error('Error processing image:', err);
+      alert('Could not process the selected image. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleCameraChange = (e) => {
+    const file = e.target.files?.[0];
+    handleFile(file);
+    e.target.value = '';
+  };
+
+  const handleGalleryChange = (e) => {
+    const file = e.target.files?.[0];
+    handleFile(file);
+    e.target.value = '';
   };
 
   return (
     <div className="space-y-6">
+      {/* Hidden file inputs for Camera and Gallery */}
+      <input
+        type="file"
+        ref={cameraInputRef}
+        onChange={handleCameraChange}
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+      />
+      <input
+        type="file"
+        ref={galleryInputRef}
+        onChange={handleGalleryChange}
+        accept="image/*"
+        className="hidden"
+      />
+
       {/* Viewfinder Target Area */}
       <div className="relative bg-canvas-card rounded-2xl border-2 border-dashed border-sandstone-400/80 p-6 sm:p-10 flex flex-col items-center justify-center text-center overflow-hidden group hover:border-terracotta transition-colors shadow-warm-sm">
         
@@ -43,32 +137,35 @@ export default function CameraViewfinder({
         </div>
 
         <h3 className="font-serif font-bold text-lg sm:text-xl text-umber mb-1.5">
-          Scan Bagalkote Monument
+          Scan Bagalkote Heritage Monument
         </h3>
         <p className="text-xs sm:text-sm text-umber-light max-w-sm mb-6 leading-relaxed">
-          Point camera at rock-cut carvings, temples, or upload a photo to identify architecture & history.
+          Take a live photo using your phone camera or select from your gallery to identify carvings, caves, and inscriptions.
         </p>
 
-        {/* Action Triggers */}
+        {/* Action Triggers: Camera, Gallery & Presets */}
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept="image/*"
-            className="hidden"
-          />
-          
           <button
-            onClick={() => fileInputRef.current?.click()}
-            className="px-5 py-2.5 rounded-stone bg-terracotta hover:bg-terracotta-deep text-white font-semibold text-sm flex items-center gap-2 shadow-warm-sm hover:shadow-terracotta-glow transition-all active:scale-95"
+            onClick={() => cameraInputRef.current?.click()}
+            disabled={isProcessing}
+            className="px-5 py-2.5 rounded-stone bg-terracotta hover:bg-terracotta-deep text-white font-semibold text-sm flex items-center gap-2 shadow-warm-sm hover:shadow-terracotta-glow transition-all active:scale-95 disabled:opacity-50"
           >
             <Camera className="w-4 h-4" />
-            <span>Capture or Upload</span>
+            <span>{isProcessing ? 'Processing...' : 'Scan (Open Camera)'}</span>
+          </button>
+
+          <button
+            onClick={() => galleryInputRef.current?.click()}
+            disabled={isProcessing}
+            className="px-4 py-2.5 rounded-stone bg-canvas-card hover:bg-sandstone-300 text-umber border border-sandstone-400 font-semibold text-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
+          >
+            <Upload className="w-4 h-4 text-terracotta" />
+            <span>Gallery (Pick Photo)</span>
           </button>
 
           <button
             onClick={() => onSampleSelected(SAMPLE_SCANS[0])}
+            disabled={isProcessing}
             className="px-4 py-2.5 rounded-stone bg-canvas hover:bg-sandstone-300/60 text-umber border border-sandstone-400 font-medium text-sm flex items-center gap-1.5 transition-all"
           >
             <Sparkles className="w-3.5 h-3.5 text-gold" />
@@ -77,9 +174,11 @@ export default function CameraViewfinder({
         </div>
 
         <div className="mt-4 text-[11px] text-umber-light flex items-center gap-2">
-          <span>Supports JPEG, PNG, WEBP</span>
+          <span>Camera & Gallery</span>
           <span>•</span>
-          <span>Instant Vision Analysis</span>
+          <span>In-Memory Image Optimization</span>
+          <span>•</span>
+          <span>Instant Vision Lens</span>
         </div>
       </div>
 

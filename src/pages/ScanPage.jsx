@@ -4,6 +4,7 @@ import CameraViewfinder from '../components/scan/CameraViewfinder';
 import ScanningAnimation from '../components/scan/ScanningAnimation';
 import ScanFailureModal from '../components/scan/ScanFailureModal';
 import Button from '../components/common/Button';
+import { analyzeMonument, simulateAiAnalysis } from '../services/aiService';
 // Helper to request approximate browser location without blocking
 function getApproximateLocation(timeoutMs = 3000) {
   return new Promise((resolve) => {
@@ -85,8 +86,12 @@ export default function ScanPage({ onScanSuccess, navigateTo }) {
         setCurrentStage(stage);
       });
       // Pass identified result to parent app for Result page view
-      onScanSuccess(result);
+      onScanSuccess({
+        ...result,
+        scannedImage: selectedImage?.src || selectedImage?.image
+      });
     } catch (err) {
+      console.error('Scan error:', err);
       setScanState('failure');
     }
   };

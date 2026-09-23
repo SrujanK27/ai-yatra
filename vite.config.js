@@ -11,7 +11,11 @@ function localServerlessPlugin() {
     name: 'local-serverless-middleware',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url === '/api/analyze' || req.url?.startsWith('/api/analyze?')) {
+        const isAnalyzeRoute = req.url === '/api/analyze' || 
+          req.url?.startsWith('/api/analyze?') ||
+          req.url === '/.netlify/functions/analyze' ||
+          req.url?.startsWith('/.netlify/functions/analyze?');
+        if (isAnalyzeRoute) {
           let body = '';
           req.on('data', chunk => { body += chunk; });
           req.on('end', async () => {
@@ -46,6 +50,7 @@ export default defineConfig({
   plugins: [react(), localServerlessPlugin()],
   server: {
     port: 3000,
+    host: true,
     open: false
   }
 });

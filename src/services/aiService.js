@@ -22,7 +22,7 @@ export const SCAN_STAGES = [
  * @returns {Promise<Object>} Identified monument details & verification metadata
  */
 export async function analyzeMonument(scanPayload, onProgress = () => {}) {
-  const image = scanPayload?.src || scanPayload?.image || '';
+  const image = scanPayload?.base64 || scanPayload?.src || scanPayload?.image || '';
   const latitude = typeof scanPayload?.latitude === 'number' ? scanPayload.latitude : null;
   const longitude = typeof scanPayload?.longitude === 'number' ? scanPayload.longitude : null;
   const monumentHintId = scanPayload?.monumentHintId;
@@ -34,8 +34,11 @@ export async function analyzeMonument(scanPayload, onProgress = () => {}) {
     await new Promise(r => setTimeout(r, 450));
   }
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout matching sample
+
   try {
-    // Call Netlify Serverless Function
+    // Call Netlify Serverless Function (/api/analyze or /.netlify/functions/analyze)
     const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: {
@@ -47,9 +50,11 @@ export async function analyzeMonument(scanPayload, onProgress = () => {}) {
         longitude,
         monumentHintId,
         isFailureDemo
-      })
+      }),
+      signal: controller.signal
     });
 
+    clearTimeout(timeout);
     onProgress(SCAN_STAGES[SCAN_STAGES.length - 1]);
     await new Promise(r => setTimeout(r, 300));
 
@@ -62,6 +67,10 @@ export async function analyzeMonument(scanPayload, onProgress = () => {}) {
     return data;
 
   } catch (apiError) {
+    clearTimeout(timeout);
+    if (apiError.name === 'AbortError') {
+      throw new Error('Request timed out. Please try again.');
+    }
     // If it was a deliberate failure demo or unrecognized monument error
     if (isFailureDemo || apiError.message === 'UNRECOGNIZED_MONUMENT') {
       throw apiError;
