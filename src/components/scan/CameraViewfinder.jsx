@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Camera, Upload, Sparkles, Image as ImageIcon, Smartphone } from 'lucide-react';
+import { Camera, Upload, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { SAMPLE_SCANS } from '../../data/sampleScans';
+import { getTranslation } from '../../data/translations';
 
 const MAX_IMAGE_DIM = 1024;
 const JPEG_QUALITY = 0.8;
@@ -56,11 +57,14 @@ function compressImage(dataUrl) {
 export default function CameraViewfinder({
   onImageSelected,
   onSampleSelected,
-  onTriggerFailureDemo
+  onTriggerFailureDemo,
+  activeLanguage = 'EN'
 }) {
   const cameraInputRef = useRef(null);
   const galleryInputRef = useRef(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const t = getTranslation(activeLanguage);
+  const isKn = activeLanguage === 'KN';
 
   const handleFile = async (file) => {
     if (!file) return;
@@ -137,10 +141,10 @@ export default function CameraViewfinder({
         </div>
 
         <h3 className="font-serif font-bold text-lg sm:text-xl text-umber mb-1.5">
-          Scan Bagalkote Heritage Monument
+          {t.scanTitle}
         </h3>
         <p className="text-xs sm:text-sm text-umber-light max-w-sm mb-6 leading-relaxed">
-          Take a live photo using your phone camera or select from your gallery to identify carvings, caves, and inscriptions.
+          {t.scanSubtitle}
         </p>
 
         {/* Action Triggers: Camera, Gallery & Presets */}
@@ -151,7 +155,7 @@ export default function CameraViewfinder({
             className="px-5 py-2.5 rounded-stone bg-terracotta hover:bg-terracotta-deep text-white font-semibold text-sm flex items-center gap-2 shadow-warm-sm hover:shadow-terracotta-glow transition-all active:scale-95 disabled:opacity-50"
           >
             <Camera className="w-4 h-4" />
-            <span>{isProcessing ? 'Processing...' : 'Scan (Open Camera)'}</span>
+            <span>{isProcessing ? 'Processing...' : t.openCamera}</span>
           </button>
 
           <button
@@ -160,7 +164,7 @@ export default function CameraViewfinder({
             className="px-4 py-2.5 rounded-stone bg-canvas-card hover:bg-sandstone-300 text-umber border border-sandstone-400 font-semibold text-sm flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
           >
             <Upload className="w-4 h-4 text-terracotta" />
-            <span>Gallery (Pick Photo)</span>
+            <span>{t.chooseGallery}</span>
           </button>
 
           <button
@@ -169,16 +173,8 @@ export default function CameraViewfinder({
             className="px-4 py-2.5 rounded-stone bg-canvas hover:bg-sandstone-300/60 text-umber border border-sandstone-400 font-medium text-sm flex items-center gap-1.5 transition-all"
           >
             <Sparkles className="w-3.5 h-3.5 text-gold" />
-            <span>Try Demo Preset</span>
+            <span>{isKn ? 'ಉದಾಹರಣೆ ಪ್ರಯತ್ನಿಸಿ' : 'Try Demo Sample'}</span>
           </button>
-        </div>
-
-        <div className="mt-4 text-[11px] text-umber-light flex items-center gap-2">
-          <span>Camera & Gallery</span>
-          <span>•</span>
-          <span>In-Memory Image Optimization</span>
-          <span>•</span>
-          <span>Instant Vision Lens</span>
         </div>
       </div>
 
@@ -187,7 +183,7 @@ export default function CameraViewfinder({
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-bold uppercase tracking-wider text-umber-light flex items-center gap-1.5">
             <ImageIcon className="w-3.5 h-3.5 text-terracotta" />
-            Or Select a Sample Monument for Instant AI Scan:
+            {t.orTrySample}:
           </span>
         </div>
 
@@ -198,22 +194,19 @@ export default function CameraViewfinder({
               onClick={() => onSampleSelected(sample)}
               className="group text-left bg-canvas-card rounded-xl p-2.5 border border-sandstone-300 hover:border-terracotta hover:shadow-md transition-all flex flex-col focus:outline-none focus:ring-2 focus:ring-terracotta"
             >
-              <div className="w-full h-24 rounded-lg overflow-hidden relative mb-2 bg-sandstone-300">
+              <div className="relative aspect-video rounded-lg overflow-hidden bg-sandstone-300 mb-2">
                 <img
                   src={sample.image}
-                  alt={sample.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  alt={isKn ? sample.kannadaName : sample.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
-                <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-umber/80 text-sandstone-50 backdrop-blur-sm">
-                  {sample.location}
-                </span>
               </div>
-              <h4 className="font-serif font-bold text-xs text-umber line-clamp-1 group-hover:text-terracotta transition-colors">
-                {sample.name}
-              </h4>
-              <p className="text-[10px] text-umber-light line-clamp-1 mt-0.5">
-                {sample.description}
-              </p>
+              <span className="font-serif font-bold text-xs text-umber line-clamp-1 group-hover:text-terracotta transition-colors">
+                {isKn ? sample.kannadaName : sample.name}
+              </span>
+              <span className="text-[10px] text-umber-light line-clamp-1">
+                {isKn ? sample.kannadaDescription : sample.description}
+              </span>
             </button>
           ))}
         </div>
@@ -225,7 +218,7 @@ export default function CameraViewfinder({
           onClick={onTriggerFailureDemo}
           className="text-xs text-sandstone-600 hover:text-terracotta underline font-medium"
         >
-          [Test Unrecognized Monument / Failure State]
+          {isKn ? '[ಗುರುತಿಸಲಾಗದ ಸ್ಮಾರಕ ಪರೀಕ್ಷೆ]' : '[Test Unrecognized Monument / Failure State]'}
         </button>
       </div>
     </div>

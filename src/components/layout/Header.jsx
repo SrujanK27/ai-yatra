@@ -1,12 +1,15 @@
 import React from 'react';
-import { Camera, Compass, MessageSquareQuote, Sparkles, MapPin } from 'lucide-react';
+import { Camera, Compass, MessageSquareQuote, Sparkles } from 'lucide-react';
+import { getTranslation } from '../../data/translations';
 
 export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN', setLanguage }) {
+  const t = getTranslation(activeLanguage);
+
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'scan', label: 'Scan Heritage', icon: Camera },
-    { id: 'explore', label: 'Explore Bagalkote', icon: Compass },
-    { id: 'ask-ai', label: 'Ask AI', icon: MessageSquareQuote },
+    { id: 'home', label: t.home },
+    { id: 'scan', label: t.scanHeritage, icon: Camera },
+    { id: 'explore', label: t.exploreBagalkote, icon: Compass },
+    { id: 'ask-ai', label: t.askAi, icon: MessageSquareQuote },
   ];
 
   return (
@@ -19,8 +22,8 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
             onClick={() => navigateTo('home')}
             className="flex items-center gap-3 text-left group focus:outline-none focus:ring-2 focus:ring-terracotta rounded-lg p-1"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-stone bg-terracotta text-white flex items-center justify-center shadow-terracotta-glow group-hover:bg-terracotta-deep transition-all">
-              <span className="font-serif text-xl sm:text-2xl font-bold tracking-tighter">ಯ</span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-stone overflow-hidden shadow-terracotta-glow transition-all group-hover:scale-105 bg-white border border-sandstone-300">
+              <img src="/images/app-icon.png" alt="AI Yatra Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
@@ -28,11 +31,11 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
                   AI Yatra
                 </span>
                 <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-gold/20 text-gold-dark border border-gold/40">
-                  Bagalkote
+                  {t.district}
                 </span>
               </div>
               <p className="text-[11px] font-medium text-umber-light tracking-wide hidden sm:block">
-                Chalukyan Heritage Lens
+                {t.subtitle}
               </p>
             </div>
           </button>
@@ -70,6 +73,7 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
                     ? 'bg-umber text-white shadow-sm'
                     : 'text-umber hover:text-terracotta'
                 }`}
+                aria-label="English Language"
               >
                 EN
               </button>
@@ -80,6 +84,7 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
                     ? 'bg-umber text-white shadow-sm'
                     : 'text-umber hover:text-terracotta'
                 }`}
+                aria-label="Kannada Language"
               >
                 ಕನ್ನಡ
               </button>
@@ -91,7 +96,7 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
               className="hidden sm:inline-flex items-center gap-2 bg-umber hover:bg-umber-dark text-white px-4 py-2 rounded-stone text-sm font-medium border border-gold/40 shadow-ai-bloom transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Sparkles className="w-4 h-4 text-gold-light" />
-              <span>Scan Monument</span>
+              <span>{t.scanMonument}</span>
             </button>
           </div>
 

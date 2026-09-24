@@ -35,7 +35,7 @@ export async function analyzeMonument(scanPayload, onProgress = () => {}) {
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout matching sample
+  const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout for peak resilience
 
   try {
     // Call Netlify Serverless Function (/api/analyze or /.netlify/functions/analyze)

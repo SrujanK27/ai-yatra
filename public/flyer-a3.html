@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Yatra - A3 Exhibition Poster (B.V.V.S. Polytechnic Bagalkot)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    /* A3 Landscape Standard: 420mm x 297mm */
+    @page {
+      size: A3 landscape;
+      margin: 0;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 420mm;
+      height: 297mm;
+      max-height: 297mm;
+      margin: 0 auto;
+      background: #ffffff; /* Pure white */
+      color: #1a1a1a;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      line-height: 1.4;
+      padding: 7mm;
+      overflow: hidden;
+    }
+    .poster-container {
+      width: 406mm;
+      height: 283mm;
+      background: #ffffff;
+      border: 1.5px solid #8b3a16; /* Frame border */
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    /* Top Academic Header with Logos */
+    .top-academic-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #8b3a16;
+      padding: 5mm 8mm; /* Added more spacing to make it less clumsy */
+    }
+    .logo-container {
+      width: 28mm;
+      height: 28mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .college-info {
+      text-align: center;
+      flex: 1;
+      padding: 0 5mm;
+    }
+    .institution-name {
+      font-family: 'Cinzel', serif;
+      font-size: 16pt;
+      font-weight: 900;
+      color: #8b3a16;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: 2mm; /* Breathing space */
+    }
+    .dept-name {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #333333;
+      letter-spacing: 0.5px;
+      margin-bottom: 3mm;
+    }
+    .project-hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20pt;
+      font-weight: 900;
+      color: #111111;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5mm;
+    }
+    .project-hero-title span {
+      color: #8b3a16;
+    }
+    .project-sub-tag {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #4a4a4a;
+      margin-bottom: 3mm;
+    }
+    .meta-pills {
+      display: flex;
+      justify-content: center;
+      gap: 5mm;
+    }
+    .meta-pill {
+      font-size: 8.5pt;
+      font-weight: 800;
+      padding: 1mm 3mm;
+      border-radius: 1mm;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #ffffff;
+      color: #8b3a16;
+      border: 1px solid #8b3a16;
+    }
+
+    /* 3-Column Layout */
+    .content-3col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      flex: 1;
+      align-items: stretch;
+      /* No gaps! Borders will separate them */
+    }
+    
+    .column-section {
+      display: flex;
+      flex-direction: column;
+      border-right: 1.5px solid #dcd8d0;
+    }
+    .column-section:last-child {
+      border-right: none;
+    }
+
+    /* Continuous Sections (No spacing between vertical contents) */
+    .section-block {
+      padding: 5mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 11pt;
+      font-weight: 800;
+      color: #8b3a16;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2.5mm;
+      display: flex;
+      align-items: center;
+      gap: 2mm;
+    }
+    .section-title .num {
+      color: #d4af37;
+      font-size: 11pt;
+    }
+    .section-block p {
+      font-size: 8.5pt;
+      color: #222222;
+      line-height: 1.55;
+      text-align: justify;
+    }
+    .section-block ul {
+      padding-left: 4.5mm;
+      margin-top: 1mm;
+    }
+    .section-block li {
+      font-size: 8.5pt;
+      color: #222222;
+      margin-bottom: 2mm;
+      line-height: 1.45;
+    }
+    .section-block li strong {
+      color: #111111;
+    }
+
+    /* Minimal Horizontal Flow Diagram */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3mm;
+      margin-top: 2mm;
+      flex: 1;
+    }
+    .flow-step-box {
+      background: #ffffff;
+      border: 1.2px solid #8b3a16;
+      border-radius: 1.5mm;
+      padding: 2.5mm 3mm;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .flow-step-tag {
+      font-size: 7.5pt;
+      font-weight: 800;
+      color: #8b3a16;
+      text-transform: uppercase;
+      margin-bottom: 1mm;
+    }
+    .flow-step-name {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #111111;
+      margin-bottom: 1mm;
+    }
+    .flow-step-desc {
+      font-size: 7.5pt;
+      color: #444444;
+      line-height: 1.3;
+    }
+
+    /* Minimal Layered Architecture */
+    .arch-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+      margin-top: 2mm;
+      flex: 1;
+      justify-content: center;
+    }
+    .arch-bar {
+      background: #ffffff;
+      border: 1.2px solid #d4af37;
+      padding: 2.5mm 3.5mm;
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+    }
+    .arch-bar-label {
+      font-size: 8pt;
+      font-weight: 800;
+      color: #8b3a16;
+      text-transform: uppercase;
+      min-width: 32mm;
+      border-right: 1.5px solid #d4af37;
+      padding-right: 2.5mm;
+    }
+    .arch-bar-content {
+      font-size: 8pt;
+      color: #222222;
+      line-height: 1.35;
+    }
+
+    /* Key Results Metric Badges */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-top: 2mm;
+    }
+    .result-badge {
+      background: #ffffff;
+      border: 1.2px solid #d4af37;
+      border-radius: 1.5mm;
+      padding: 3mm;
+      text-align: center;
+    }
+    .result-value {
+      font-family: 'Cinzel', serif;
+      font-size: 13pt;
+      font-weight: 900;
+      color: #8b3a16;
+    }
+    .result-label {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #333333;
+      text-transform: uppercase;
+      margin-top: 1mm;
+    }
+
+    /* Footer */
+    .poster-footer {
+      border-top: 2px solid #8b3a16;
+      padding: 3.5mm 6mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.5pt;
+      color: #111111;
+      font-weight: 600;
+      background: #ffffff;
+    }
+    .tech-badges-list {
+      display: flex;
+      gap: 2mm;
+      align-items: center;
+    }
+    .tech-tag {
+      background: #ffffff;
+      border: 1px solid #111111;
+      padding: 1mm 2.5mm;
+      border-radius: 1mm;
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #111111;
+    }
+    .footer-right {
+      display: flex;
+      gap: 4mm;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="poster-container">
+  
+  <!-- 1. Top Academic Header with Logos -->
+  <header class="top-academic-header">
+    <div class="logo-container">
+      <img src="/images/college_logo.png" alt="B.V.V.S. Polytechnic Logo" class="logo-img">
+    </div>
+
+    <div class="college-info">
+      <h1 class="institution-name">B.V.V.S. POLYTECHNIC (AUTONOMOUS), BAGALKOT</h1>
+      <p class="dept-name">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</p>
+      <h2 class="project-hero-title" style="display: flex; align-items: center; justify-content: center; gap: 3.5mm;">
+        <img src="/images/app-icon.png" alt="AI Yatra Logo" style="width: 15mm; height: 15mm; object-fit: contain; border-radius: 2mm;">
+        <span>AI YATRA: <span>CHALUKYAN HERITAGE LENS</span></span>
+      </h2>
+      <p class="project-sub-tag">AI-Based Intelligent Multimodal Tourist Guide for Rock-Cut Heritage Monuments</p>
+      
+      <div class="meta-pills">
+        <span class="meta-pill">Theme: Smart Technology</span>
+        <span class="meta-pill">Domain: Computer Vision & Multimodal AI</span>
+        <span class="meta-pill">Academic Year: 2025–2026</span>
+      </div>
+    </div>
+
+    <div class="logo-container">
+      <img src="/images/cs_logo.png" alt="Computer Science Department Logo" class="logo-img">
+    </div>
+  </header>
+
+  <!-- 2. Main 3-Column Grid Layout (Continuous Thin Lines) -->
+  <main class="content-3col">
+    
+    <!-- ==================== COLUMN 1 ==================== -->
+    <section class="column-section">
+      
+      <div class="section-block">
+        <div class="section-title"><span class="num">01.</span> Problem Statement</div>
+        <p>
+          The 6th–8th century Chalukyan rock-cut and structural monuments across Badami, Pattadakal, and Aihole represent the cradle of Indian temple architecture. However, modern tourists face major barriers: a severe shortage of certified multilingual guides, static on-site signboards lacking contextual depth, complete inability to interpret classical stone epigraphs (Halegannada / Sanskrit), and lack of instant, hands-free audio-visual narration.
+        </p>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title"><span class="num">02.</span> Project Objectives</div>
+        <ul>
+          <li><strong>Instant Vision Recognition:</strong> Real-time stone carving & facade classification via live camera capture.</li>
+          <li><strong>Bilingual Accessibility:</strong> Complete English & Kannada (ಕನ್ನಡ) toggle across audio guides, details, and UI.</li>
+          <li><strong>Epigraphical Deciphering:</strong> Transliteration and historical translation of ancient inscriptions.</li>
+          <li><strong>Zero-Install Web App:</strong> Client-side optimized PWA requiring no app store downloads.</li>
+        </ul>
+      </div>
+
+      <div class="section-block" style="flex: 1.2;">
+        <div class="section-title"><span class="num">03.</span> Proposed Solution</div>
+        <p>
+          <strong>AI Yatra</strong> implements an intelligent, privacy-first web architecture that captures monument images, compresses them in-browser via HTML5 Canvas, processes visual features using <strong>Google Gemini 2.5 Flash Multimodal Vision</strong>, verifies against a calibrated <strong>ASI Epigraphical Dataset</strong>, and delivers rich multimedia insights including narration and interactive AI assistance.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ==================== COLUMN 2 ==================== -->
+    <section class="column-section">
+      
+      <div class="section-block" style="flex: 1.5;">
+        <div class="section-title"><span class="num">04.</span> Methodology Pipeline Flowchart</div>
+        <div class="flow-grid">
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 1</span>
+            <div class="flow-step-name">Image Acquisition</div>
+            <div class="flow-step-desc">Camera viewfinder or photo upload</div>
+          </div>
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 2</span>
+            <div class="flow-step-name">Canvas Preprocess</div>
+            <div class="flow-step-desc">Device scaling (1024px max, JPEG)</div>
+          </div>
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 3</span>
+            <div class="flow-step-name">Serverless Function</div>
+            <div class="flow-step-desc">Netlify API with input validation</div>
+          </div>
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 4</span>
+            <div class="flow-step-name">Gemini Vision AI</div>
+            <div class="flow-step-desc">OCR & feature extraction</div>
+          </div>
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 5</span>
+            <div class="flow-step-name">ASI Knowledge Sync</div>
+            <div class="flow-step-desc">Ground-truth verification across sites</div>
+          </div>
+          <div class="flow-step-box">
+            <span class="flow-step-tag">Step 6</span>
+            <div class="flow-step-name">Bilingual Output</div>
+            <div class="flow-step-desc">Interactive EN/KN audio guide</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block" style="flex: 1;">
+        <div class="section-title"><span class="num">05.</span> System Architecture</div>
+        <div class="arch-container">
+          <div class="arch-bar">
+            <span class="arch-bar-label">Presentation</span>
+            <span class="arch-bar-content">React 18 SPA, TailwindCSS, Camera Viewfinder, Audio Player</span>
+          </div>
+          <div class="arch-bar">
+            <span class="arch-bar-label">Middleware</span>
+            <span class="arch-bar-content">HTML5 Canvas Compression, Serverless API, Rejection Filter</span>
+          </div>
+          <div class="arch-bar">
+            <span class="arch-bar-label">Intelligence</span>
+            <span class="arch-bar-content">Google Gemini 2.5 Flash Vision + Calibrated Ground Truth</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title"><span class="num">06.</span> Key Functional Modules</div>
+        <ul>
+          <li><strong>Vision Epigraphy Engine:</strong> Accurately identifies deities and inscriptions (e.g., Nataraja, Parshvanatha).</li>
+          <li><strong>Bilingual Audio Guide:</strong> Real-time switch with synchronized hands-free narration.</li>
+          <li><strong>Contextual AI Assistant:</strong> Dynamic site-scoped interactive exploration chatbot.</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- ==================== COLUMN 3 ==================== -->
+    <section class="column-section">
+      
+      <div class="section-block">
+        <div class="section-title"><span class="num">07.</span> Results & Performance</div>
+        <p style="margin-bottom: 2.5mm;">
+          The system achieved high accuracy across real test scans of Badami, Pattadakal, and Aihole monuments with rapid execution.
+        </p>
+        <div class="results-grid">
+          <div class="result-badge">
+            <div class="result-value">100%</div>
+            <div class="result-label">Client Privacy</div>
+          </div>
+          <div class="result-badge">
+            <div class="result-value">EN / ಕನ್ನಡ</div>
+            <div class="result-label">Bilingual Support</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-title"><span class="num">08.</span> Conclusion</div>
+        <p>
+          <strong>AI Yatra</strong> successfully demonstrates how modern Multimodal Generative AI and lightweight web technologies can bridge ancient cultural heritage with tourists. By providing instant in-browser visual recognition, epigraphical transliteration, and localized audio narration with zero hardware dependency, the project solves the critical guide shortage while preserving the historical narrative of Chalukyan architecture.
+        </p>
+      </div>
+
+      <div class="section-block" style="flex: 1.2;">
+        <div class="section-title"><span class="num">09.</span> Future Scope</div>
+        <ul>
+          <li><strong>Augmented Reality (AR):</strong> 3D holographic digital restoration of damaged relief carvings.</li>
+          <li><strong>Edge AI Offline Engine:</strong> On-device model execution (WebLLM/TensorFlow.js) for remote cave areas.</li>
+          <li><strong>Multilingual Speech:</strong> Voice tours in Hindi, Telugu, Tamil, and Marathi.</li>
+          <li><strong>GPS Smart Geofencing:</strong> Automatic proximity-triggered historical audio tours.</li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 3. Bottom Footer with Team Details -->
+  <footer class="poster-footer">
+    <div class="tech-badges-list">
+      <strong>Tech Stack:</strong>
+      <span class="tech-tag">React 18</span>
+      <span class="tech-tag">Vite</span>
+      <span class="tech-tag">TailwindCSS</span>
+      <span class="tech-tag">Netlify Serverless</span>
+      <span class="tech-tag">Google Gemini 2.5 Flash</span>
+      <span class="tech-tag">HTML5 Canvas & Web Audio API</span>
+    </div>
+
+    <div class="footer-right">
+      <strong>Project:</strong> AI Yatra 
+      &nbsp;|&nbsp; 
+      <strong>Team:</strong> TECH GIANTS (Srujan K, Venugopal K)
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

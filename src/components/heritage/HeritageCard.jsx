@@ -1,9 +1,12 @@
 import React from 'react';
-import { MapPin, Volume2, Sparkles, ArrowRight, Award } from 'lucide-react';
+import { MapPin, Volume2, ArrowRight } from 'lucide-react';
 import Badge from '../common/Badge';
+import { getTranslation } from '../../data/translations';
 
-export default function HeritageCard({ monument, onSelect, onAskAi }) {
+export default function HeritageCard({ monument, onSelect, activeLanguage = 'EN' }) {
   if (!monument) return null;
+  const t = getTranslation(activeLanguage);
+  const isKn = activeLanguage === 'KN';
 
   return (
     <div 
@@ -14,7 +17,7 @@ export default function HeritageCard({ monument, onSelect, onAskAi }) {
       <div className="relative aspect-[16/10] overflow-hidden bg-sandstone-300">
         <img
           src={monument.thumbnail || monument.image}
-          alt={monument.name}
+          alt={isKn ? (monument.kannadaName || monument.name) : monument.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
@@ -52,7 +55,7 @@ export default function HeritageCard({ monument, onSelect, onAskAi }) {
           </div>
 
           <h3 className="font-serif font-bold text-base sm:text-lg text-umber group-hover:text-terracotta transition-colors line-clamp-1 mb-1">
-            {monument.name}
+            {isKn ? (monument.kannadaName || monument.name) : monument.name}
           </h3>
 
           <p className="text-xs text-umber-light line-clamp-2 leading-relaxed mb-3">
@@ -67,7 +70,7 @@ export default function HeritageCard({ monument, onSelect, onAskAi }) {
           </span>
 
           <span className="inline-flex items-center gap-1 font-semibold text-terracotta group-hover:translate-x-0.5 transition-transform shrink-0">
-            Explore <ArrowRight className="w-3.5 h-3.5" />
+            {t.explore} <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
       </div>

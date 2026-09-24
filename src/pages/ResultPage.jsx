@@ -20,6 +20,7 @@ import Button from '../components/common/Button';
 import AudioPlayer from '../components/common/AudioPlayer';
 import EpigraphDrawer from '../components/heritage/EpigraphDrawer';
 import { HERITAGE_MONUMENTS } from '../data/heritageData';
+import { getTranslation } from '../data/translations';
 
 export default function ResultPage({ 
   monument, 
@@ -27,12 +28,15 @@ export default function ResultPage({
   scannedImage,
   navigateTo, 
   onAskAiWithMonument,
-  onSelectNearby 
+  onSelectNearby,
+  activeLanguage = 'EN'
 }) {
   const [activeTab, setActiveTab] = useState('about'); // 'about' | 'architecture' | 'epigraphs' | 'map'
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [viewScannedPhoto, setViewScannedPhoto] = useState(Boolean(scannedImage));
+  const t = getTranslation(activeLanguage);
+  const isKn = activeLanguage === 'KN';
 
   // Fallback to Badami Cave 1 if accessed directly
   const data = monument || HERITAGE_MONUMENTS[0];
@@ -51,11 +55,11 @@ export default function ResultPage({
       {/* Top Navigation Bar */}
       <div className="flex items-center justify-between">
         <button
-          onClick={() => navigateTo('explore')}
+          onClick={() => navigateTo('home')}
           className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-umber hover:text-terracotta transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Circuit</span>
+          <span>{t.backToHome}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -113,7 +117,7 @@ export default function ResultPage({
             className="w-full sm:w-auto px-4 py-2 rounded-stone bg-umber hover:bg-umber-dark text-sandstone-50 text-xs font-semibold flex items-center justify-center gap-2 border border-gold/40 shadow-sm transition-all"
           >
             <MessageSquareQuote className="w-3.5 h-3.5 text-gold-light" />
-            <span>Ask AI About This Site</span>
+            <span>{t.askAiAboutThis}</span>
           </button>
         </div>
 
@@ -121,7 +125,7 @@ export default function ResultPage({
         {aiVerification?.featuresDetected && aiVerification.featuresDetected.length > 0 && (
           <div className="pt-2 border-t border-gold/20">
             <span className="text-[11px] font-bold text-umber uppercase tracking-wider block mb-1.5">
-              🔍 Vision Features Identified from Image:
+              🔍 Vision Features Identified:
             </span>
             <div className="flex flex-wrap gap-1.5">
               {aiVerification.featuresDetected.map((feat, idx) => (
@@ -174,7 +178,7 @@ export default function ResultPage({
         <div className="relative aspect-[16/9] sm:aspect-[21/9] bg-sandstone-300">
           <img
             src={viewScannedPhoto && scannedImage ? scannedImage : data.image}
-            alt={data.name}
+            alt={isKn ? (data.kannadaName || data.name) : data.name}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-umber/90 via-umber/30 to-transparent pointer-events-none" />
@@ -198,10 +202,10 @@ export default function ResultPage({
             </div>
 
             <h1 className="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-white">
-              {data.name}
+              {isKn ? (data.kannadaName || data.name) : data.name}
             </h1>
             <p className="text-xs sm:text-sm text-sandstone-200 font-medium font-sans">
-              {data.kannadaName}
+              {isKn ? data.name : data.kannadaName}
             </p>
           </div>
         </div>
@@ -210,7 +214,7 @@ export default function ResultPage({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 sm:p-5 bg-sandstone-200/70 border-t border-sandstone-300 text-xs">
           <div>
             <span className="text-[10px] uppercase font-bold text-umber-light tracking-wider block">
-              Location
+              {t.locationLabel}
             </span>
             <span className="font-semibold text-umber flex items-center gap-1 mt-0.5">
               <MapPin className="w-3 h-3 text-terracotta" />
@@ -220,7 +224,7 @@ export default function ResultPage({
 
           <div>
             <span className="text-[10px] uppercase font-bold text-umber-light tracking-wider block">
-              Patrons
+              {t.patronLabel}
             </span>
             <span className="font-semibold text-umber mt-0.5 block truncate">
               {data.builder}
@@ -229,7 +233,7 @@ export default function ResultPage({
 
           <div>
             <span className="text-[10px] uppercase font-bold text-umber-light tracking-wider block">
-              Style
+              {t.styleLabel}
             </span>
             <span className="font-semibold text-umber mt-0.5 block truncate">
               {data.architecturalStyle}
@@ -238,10 +242,10 @@ export default function ResultPage({
 
           <div>
             <span className="text-[10px] uppercase font-bold text-umber-light tracking-wider block">
-              Category
+              {t.dynastyLabel}
             </span>
             <span className="font-semibold text-umber mt-0.5 block truncate">
-              {data.category}
+              {data.period}
             </span>
           </div>
         </div>
@@ -251,7 +255,7 @@ export default function ResultPage({
       {data.audioGuide && (
         <AudioPlayer
           audioGuide={data.audioGuide}
-          monumentName={data.name}
+          monumentName={isKn ? (data.kannadaName || data.name) : data.name}
         />
       )}
 
@@ -259,10 +263,10 @@ export default function ResultPage({
       <div className="space-y-6">
         <div className="flex border-b border-sandstone-300 gap-4 overflow-x-auto no-scrollbar">
           {[
-            { id: 'about', label: 'History & Narrative' },
-            { id: 'architecture', label: 'Architectural Details' },
-            { id: 'epigraphs', label: 'Stone Epigraphs' },
-            { id: 'map', label: 'Location & Map' }
+            { id: 'about', label: t.tabs.about },
+            { id: 'architecture', label: t.tabs.architecture },
+            { id: 'epigraphs', label: t.tabs.epigraphs },
+            { id: 'map', label: t.tabs.nearby }
           ].map((tab) => (
             <button
               key={tab.id}

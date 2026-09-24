@@ -15,7 +15,7 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
   const filteredMonuments = useMemo(() => {
     return HERITAGE_MONUMENTS.filter((monument) => {
       // Search query filter
-      const matchesSearch = searchQuery === '' || 
+      const matchesSearch = searchQuery === '' ||
         monument.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         monument.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
         monument.about.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -46,7 +46,7 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8 pb-20">
-      
+
       {/* Header */}
       <div>
         <SectionHeader
@@ -58,7 +58,7 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
 
       {/* Search & Filter Control Bar */}
       <div className="bg-canvas-card rounded-2xl p-4 sm:p-5 border border-sandstone-300 shadow-warm-sm space-y-4">
-        
+
         {/* Search Input Bar */}
         <div className="relative">
           <Search className="w-4 h-4 text-sandstone-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -81,7 +81,7 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
 
         {/* Region & Sort Selectors */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-1">
-          
+
           {/* Region Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 no-scrollbar">
             <span className="text-[11px] font-bold text-umber-light uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
@@ -92,11 +92,10 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
               <button
                 key={region}
                 onClick={() => setSelectedRegion(region)}
-                className={`px-3 py-1 rounded-pill text-xs font-semibold whitespace-nowrap transition-all ${
-                  selectedRegion === region
+                className={`px-3 py-1 rounded-pill text-xs font-semibold whitespace-nowrap transition-all ${selectedRegion === region
                     ? 'bg-terracotta text-white shadow-sm'
                     : 'bg-canvas text-umber-light hover:text-umber border border-sandstone-300'
-                }`}
+                  }`}
               >
                 {region}
               </button>
@@ -163,6 +162,7 @@ export default function ExplorePage({ onSelectMonument, navigateTo }) {
               key={monument.id}
               monument={monument}
               onSelect={onSelectMonument}
+              activeLanguage={activeLanguage}
             />
           ))}
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import MobileNav from './components/layout/MobileNav';
@@ -17,10 +17,31 @@ export default function App() {
   const [scannedImage, setScannedImage] = useState(null);
   const [activeLanguage, setActiveLanguage] = useState('EN');
 
+  // Handle browser & mobile hardware back button
+  useEffect(() => {
+    // Replace initial state
+    window.history.replaceState({ route: 'home' }, '', '');
+
+    const handlePopState = (event) => {
+      // Whenever mobile back is pressed, return to home or previous route
+      if (event.state && event.state.route) {
+        setCurrentRoute(event.state.route);
+      } else {
+        setCurrentRoute('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // Navigation handlers
   const navigateTo = (route) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentRoute(route);
+    if (route !== currentRoute) {
+      window.history.pushState({ route }, '', '');
+      setCurrentRoute(route);
+    }
   };
 
   // Called when AI Scan completes successfully
@@ -71,6 +92,7 @@ export default function App() {
           <HomePage
             navigateTo={navigateTo}
             onSelectMonument={handleSelectMonument}
+            activeLanguage={activeLanguage}
           />
         )}
 
@@ -78,6 +100,7 @@ export default function App() {
           <ScanPage
             navigateTo={navigateTo}
             onScanSuccess={handleScanSuccess}
+            activeLanguage={activeLanguage}
           />
         )}
 
@@ -89,6 +112,7 @@ export default function App() {
             navigateTo={navigateTo}
             onAskAiWithMonument={handleAskAiWithMonument}
             onSelectNearby={handleSelectNearby}
+            activeLanguage={activeLanguage}
           />
         )}
 
@@ -96,6 +120,7 @@ export default function App() {
           <AskAiPage
             initialMonument={selectedMonument}
             navigateTo={navigateTo}
+            activeLanguage={activeLanguage}
           />
         )}
 
@@ -103,17 +128,21 @@ export default function App() {
           <ExplorePage
             navigateTo={navigateTo}
             onSelectMonument={handleSelectMonument}
+            activeLanguage={activeLanguage}
           />
         )}
       </main>
 
-      {/* Persistent Global Stitch Footer */}
-      <Footer navigateTo={navigateTo} />
+      {/* Persistent Global Stitch Footer - Hidden on Scan and Ask AI pages as requested */}
+      {currentRoute !== 'scan' && currentRoute !== 'ask-ai' && (
+        <Footer navigateTo={navigateTo} activeLanguage={activeLanguage} />
+      )}
 
       {/* Mobile Sticky Bottom Navigation Bar */}
       <MobileNav
         currentRoute={currentRoute}
         navigateTo={navigateTo}
+        activeLanguage={activeLanguage}
       />
 
     </div>

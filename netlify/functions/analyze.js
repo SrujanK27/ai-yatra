@@ -1,12 +1,11 @@
 import fs from 'fs';
-import https from 'https';
+import { GoogleGenAI } from '@google/genai';
 import { HERITAGE_MONUMENTS, getHeritageKnowledgeContext } from '../../src/data/heritageData.js';
 
 /**
  * Netlify Serverless Function: POST /api/analyze & /.netlify/functions/analyze
  * 
- * Image Analysis via Google Gemini Multimodal Vision REST API
- * Transplants the proven HTTPS pipeline & model retry chain from the working sample.
+ * Monument Analysis via Google Gemini Multimodal Vision API
  * 
  * SECURITY:
  * - API key stored securely server-side in environment variable
@@ -37,40 +36,6 @@ function getApiKey() {
     }
   } catch (_) {}
   return null;
-}
-
-/**
- * Direct HTTPS request helper matching the proven sample implementation
- */
-function geminiRequest(url, postData) {
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(url);
-    const options = {
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData),
-      },
-    };
-
-    const req = https.request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => { data += chunk; });
-      res.on('end', () => {
-        resolve({ status: res.statusCode, body: data });
-      });
-    });
-
-    req.on('error', (err) => reject(err));
-    req.setTimeout(25000, () => {
-      req.destroy();
-      reject(new Error('Request timed out'));
-    });
-    req.write(postData);
-    req.end();
-  });
 }
 
 /**
@@ -178,7 +143,7 @@ RULES:
 2. If it is another historical temple/fort/monument outside Bagalkote, set "identificationStatus": "identified" and provide its accurate name and details.
 3. If the photograph is NOT a monument/heritage site (e.g. car, selfie, modern room, animal, random object, blurry/unrecognizable image), set "identificationStatus": "unknown" and "monumentId": "unknown".
 
-Respond ONLY with valid JSON in this exact structure (no markdown, no code fences):
+Respond ONLY with valid JSON in this exact structure:
 {
   "identificationStatus": "identified" or "unknown",
   "monumentId": "badami-cave-1" | "badami-cave-2" | "badami-cave-3" | "badami-cave-4" | "badami-caves-general" | "pattadakal-virupaksha" | "aihole-durga-temple" | "bhutanatha-temples" | "mahakuta-complex" | "kudalasangama" | "banashankari-temple" | "other-heritage" | "unknown",
@@ -191,179 +156,162 @@ Respond ONLY with valid JSON in this exact structure (no markdown, no code fence
   "didYouKnow": ["Fun fact 1", "Fun fact 2"]
 }`;
 
-      const postData = JSON.stringify({
-        contents: [{
-          parts: [
-            { text: promptText },
-            {
-              inlineData: {
-                mimeType: mimeType || 'image/jpeg',
-                data: base64
-              }
-            }
-          ]
-        }],
-        generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 1024
-        }
-      });
-
-      const models = [
+      const ai = new GoogleGenAI({ apiKey });
+      const activeModels = [
         'gemini-3.5-flash-lite',
+        'gemini-3.6-flash',
         'gemini-3.5-flash',
-        'gemini-2.5-flash',
-        'gemini-2.5-pro',
-        'gemini-2.0-flash',
-        'gemini-1.5-flash'
+        'gemini-3.1-flash-lite'
       ];
 
-      for (const model of models) {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      for (const model of activeModels) {
+        try {
+          const response = await ai.models.generateContent({
+            model: model,
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  { text: promptText },
+                  {
+                    inlineData: {
+                      mimeType: mimeType || 'image/jpeg',
+                      data: base64
+                    }
+                  }
+                ]
+              }
+            ],
+            config: {
+              responseMimeType: 'application/json',
+              temperature: 0.2,
+              maxOutputTokens: 1024
+            }
+          });
 
-        for (let attempt = 0; attempt < 2; attempt++) {
-          if (attempt > 0) {
-            await new Promise(r => setTimeout(r, 1000));
+          const textResponse = response.text || '';
+          let geminiData = {};
+          try {
+            const cleaned = textResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            geminiData = JSON.parse(cleaned);
+          } catch (parseErr) {
+            console.error('Failed to parse Gemini output:', textResponse);
+            continue;
           }
 
-          try {
-            const response = await geminiRequest(geminiUrl, postData);
+          // Validate recognition result
+          if (geminiData.identificationStatus === 'unknown' || geminiData.monumentId === 'unknown') {
+            return {
+              statusCode: 422,
+              headers: CORS_HEADERS,
+              body: JSON.stringify({
+                error: 'UNRECOGNIZED_MONUMENT',
+                message: 'The uploaded image could not be matched with confidence to a heritage monument.'
+              })
+            };
+          }
 
-            if (response.status === 200) {
-              const data = JSON.parse(response.body);
-              const textResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-              if (!textResponse) {
-                break;
-              }
-
-              let geminiData = {};
-              try {
-                const cleaned = textResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                geminiData = JSON.parse(cleaned);
-              } catch (parseErr) {
-                console.error('Failed to parse Gemini output:', textResponse);
-                break;
-              }
-
-              // Validate recognition result
-              if (geminiData.identificationStatus === 'unknown' || geminiData.monumentId === 'unknown') {
-                return {
-                  statusCode: 422,
-                  headers: CORS_HEADERS,
-                  body: JSON.stringify({
-                    error: 'UNRECOGNIZED_MONUMENT',
-                    message: 'The uploaded image could not be matched with confidence to a heritage monument.'
-                  })
-                };
-              }
-
-              // Resolve matched monument record from knowledge base
-              let finalMonument = HERITAGE_MONUMENTS.find(m => m.id === geminiData.monumentId);
-              if (!finalMonument) {
-                const rawName = ((geminiData.monumentName || '') + ' ' + (geminiData.monumentId || '')).toLowerCase();
-                if (rawName.includes('cave 2') || rawName.includes('trivikrama')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-2');
-                } else if (rawName.includes('cave 3') || rawName.includes('mangalesha') || rawName.includes('maha vishnu')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-3');
-                } else if (rawName.includes('cave 4') || rawName.includes('jain') || rawName.includes('parshvanatha')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-4');
-                } else if (rawName.includes('cave 1') || rawName.includes('nataraja')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-1');
-                } else if (rawName.includes('badami') || rawName.includes('vatapi') || rawName.includes('agastya')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-caves-general');
-                } else if (rawName.includes('pattadakal') || rawName.includes('virupaksha')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'pattadakal-virupaksha');
-                } else if (rawName.includes('aihole') || rawName.includes('durga')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'aihole-durga-temple');
-                } else if (rawName.includes('bhutanatha')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'bhutanatha-temples');
-                } else if (rawName.includes('mahakuta')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'mahakuta-complex');
-                } else if (rawName.includes('kudalasangama')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'kudalasangama');
-                } else if (rawName.includes('banashankari')) {
-                  finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'banashankari-temple');
-                } else {
-                  // Construct dynamic monument for external heritage sites
-                  finalMonument = {
-                    id: 'custom-heritage-' + Date.now(),
-                    name: geminiData.monumentName || 'Identified Heritage Site',
-                    aliases: [geminiData.monumentName],
-                    kannadaName: 'ಪ್ರಾಚೀನ ಪರಂಪರೆ ತಾಣ',
-                    location: geminiData.location || 'Karnataka Heritage Circuit',
-                    region: 'Bagalkote Circuit',
-                    category: geminiData.category || 'Historical Monument',
-                    coordinates: {
-                      lat: typeof latitude === 'number' ? latitude : 15.9189,
-                      lng: typeof longitude === 'number' ? longitude : 75.6766
-                    },
-                    period: geminiData.period || 'Historic Era',
-                    historicalSignificance: geminiData.historicalSignificance || 'Recognized Indian architectural monument.',
-                    distinctiveArchitecturalFeatures: geminiData.architecturalFeatures || [],
-                    keyStructures: [geminiData.monumentName],
-                    architecturalStyle: 'Indian Classical / Rock-cut Heritage',
-                    builder: 'Historical Artisans & Royal Patrons',
-                    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
-                    thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
-                    tags: ['Heritage', 'AI Verified', 'Architecture'],
-                    isUnesco: false,
-                    audioGuide: {
-                      duration: '3 min 30 sec',
-                      title: geminiData.monumentName || 'Heritage Discovery Audio',
-                      narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
-                      transcript: geminiData.historicalSignificance || 'Welcome to this ancient architectural treasure.'
-                    },
-                    about: geminiData.historicalSignificance || 'Discovered and verified via AI Yatra Vision Multimodal Lens.',
-                    architecture: {
-                      overview: 'Distinctive monumental architectural features recognized by AI vision analysis.',
-                      highlights: (geminiData.architecturalFeatures || []).map((feat, i) => ({
-                        title: `Architectural Feature ${i + 1}`,
-                        description: feat
-                      }))
-                    },
-                    didYouKnow: geminiData.didYouKnow || ['This site showcases the mastery of ancient Indian stone architecture.'],
-                    epigraphs: [],
-                    nearbyAttractions: HERITAGE_MONUMENTS.slice(0, 3).map(m => ({
-                      id: m.id,
-                      name: m.name,
-                      distance: 'Nearby'
-                    }))
-                  };
-                }
-              }
-
-              return {
-                statusCode: 200,
-                headers: CORS_HEADERS,
-                body: JSON.stringify({
-                  success: true,
-                  monumentId: finalMonument.id,
-                  monument: finalMonument,
-                  geoCoordinates: {
-                    latitude: typeof latitude === 'number' ? latitude : finalMonument.coordinates.lat,
-                    longitude: typeof longitude === 'number' ? longitude : finalMonument.coordinates.lng
-                  },
-                  scanTimestamp: new Date().toISOString(),
-                  aiVerification: {
-                    status: 'VERIFIED',
-                    badgeText: '✨ Identified by AI',
-                    model: model,
-                    featuresDetected: geminiData.architecturalFeatures || finalMonument.distinctiveArchitecturalFeatures,
-                    historicalSignificance: geminiData.historicalSignificance || finalMonument.historicalSignificance,
-                    didYouKnow: geminiData.didYouKnow || finalMonument.didYouKnow
-                  }
-                })
+          // Resolve matched monument record from knowledge base
+          let finalMonument = HERITAGE_MONUMENTS.find(m => m.id === geminiData.monumentId);
+          if (!finalMonument) {
+            const rawName = ((geminiData.monumentName || '') + ' ' + (geminiData.monumentId || '')).toLowerCase();
+            if (rawName.includes('cave 2') || rawName.includes('trivikrama')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-2');
+            } else if (rawName.includes('cave 3') || rawName.includes('mangalesha') || rawName.includes('maha vishnu')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-3');
+            } else if (rawName.includes('cave 4') || rawName.includes('jain') || rawName.includes('parshvanatha')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-4');
+            } else if (rawName.includes('cave 1') || rawName.includes('nataraja')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-1');
+            } else if (rawName.includes('badami') || rawName.includes('vatapi') || rawName.includes('agastya')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-caves-general');
+            } else if (rawName.includes('pattadakal') || rawName.includes('virupaksha')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'pattadakal-virupaksha');
+            } else if (rawName.includes('aihole') || rawName.includes('durga')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'aihole-durga-temple');
+            } else if (rawName.includes('bhutanatha')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'bhutanatha-temples');
+            } else if (rawName.includes('mahakuta')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'mahakuta-complex');
+            } else if (rawName.includes('kudalasangama')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'kudalasangama');
+            } else if (rawName.includes('banashankari')) {
+              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'banashankari-temple');
+            } else {
+              // Dynamic monument for other recognized heritage sites
+              finalMonument = {
+                id: 'custom-heritage-' + Date.now(),
+                name: geminiData.monumentName || 'Identified Heritage Site',
+                aliases: [geminiData.monumentName],
+                kannadaName: 'ಪ್ರಾಚೀನ ಪರಂಪರೆ ತಾಣ',
+                location: geminiData.location || 'Karnataka Heritage Circuit',
+                region: 'Bagalkote Circuit',
+                category: geminiData.category || 'Historical Monument',
+                coordinates: {
+                  lat: typeof latitude === 'number' ? latitude : 15.9189,
+                  lng: typeof longitude === 'number' ? longitude : 75.6766
+                },
+                period: geminiData.period || 'Historic Era',
+                historicalSignificance: geminiData.historicalSignificance || 'Recognized Indian architectural monument.',
+                distinctiveArchitecturalFeatures: geminiData.architecturalFeatures || [],
+                keyStructures: [geminiData.monumentName],
+                architecturalStyle: 'Indian Classical / Rock-cut Heritage',
+                builder: 'Historical Artisans & Royal Patrons',
+                image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+                thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+                tags: ['Heritage', 'AI Verified', 'Architecture'],
+                isUnesco: false,
+                audioGuide: {
+                  duration: '3 min 30 sec',
+                  title: geminiData.monumentName || 'Heritage Discovery Audio',
+                  narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
+                  transcript: geminiData.historicalSignificance || 'Welcome to this ancient architectural treasure.'
+                },
+                about: geminiData.historicalSignificance || 'Discovered and verified via AI Yatra Vision Multimodal Lens.',
+                architecture: {
+                  overview: 'Distinctive monumental architectural features recognized by AI vision analysis.',
+                  highlights: (geminiData.architecturalFeatures || []).map((feat, i) => ({
+                    title: `Architectural Feature ${i + 1}`,
+                    description: feat
+                  }))
+                },
+                didYouKnow: geminiData.didYouKnow || ['This site showcases the mastery of ancient Indian stone architecture.'],
+                epigraphs: [],
+                nearbyAttractions: HERITAGE_MONUMENTS.slice(0, 3).map(m => ({
+                  id: m.id,
+                  name: m.name,
+                  distance: 'Nearby'
+                }))
               };
             }
-
-            if (response.status !== 503 && response.status !== 429) {
-              break; // Try next model for non-transient error
-            }
-          } catch (reqErr) {
-            console.warn(`Request error on model ${model}:`, reqErr.message);
-            break;
           }
+
+          return {
+            statusCode: 200,
+            headers: CORS_HEADERS,
+            body: JSON.stringify({
+              success: true,
+              monumentId: finalMonument.id,
+              monument: finalMonument,
+              geoCoordinates: {
+                latitude: typeof latitude === 'number' ? latitude : finalMonument.coordinates.lat,
+                longitude: typeof longitude === 'number' ? longitude : finalMonument.coordinates.lng
+              },
+              scanTimestamp: new Date().toISOString(),
+              aiVerification: {
+                status: 'VERIFIED',
+                badgeText: '✨ Identified by AI',
+                model: model,
+                featuresDetected: geminiData.architecturalFeatures || finalMonument.distinctiveArchitecturalFeatures,
+                historicalSignificance: geminiData.historicalSignificance || finalMonument.historicalSignificance,
+                didYouKnow: geminiData.didYouKnow || finalMonument.didYouKnow
+              }
+            })
+          };
+
+        } catch (modelErr) {
+          console.warn(`Model ${model} failed (${modelErr.message}), trying next model...`);
+          continue;
         }
       }
     }

@@ -3,6 +3,9 @@
   publish = "dist"
   functions = "netlify/functions"
 
+[functions]
+  node_bundler = "esbuild"
+
 # Map API requests to Netlify Serverless Functions
 [[redirects]]
   from = "/api/*"

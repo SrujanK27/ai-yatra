@@ -9,19 +9,23 @@ import {
   ChevronDown,
   Volume2,
   HelpCircle,
-  Landmark
+  Landmark,
+  ArrowLeft
 } from 'lucide-react';
 import ChatMessage from '../components/chat/ChatMessage';
 import SuggestionPills from '../components/chat/SuggestionPills';
 import { HERITAGE_MONUMENTS } from '../data/heritageData';
+import { getTranslation } from '../data/translations';
 
-export default function AskAiPage({ initialMonument, navigateTo }) {
+export default function AskAiPage({ initialMonument, navigateTo, activeLanguage = 'EN' }) {
   // Current active monument context
   const [activeMonument, setActiveMonument] = useState(initialMonument || HERITAGE_MONUMENTS[0]);
   const [inputQuery, setInputQuery] = useState('');
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
+  const t = getTranslation(activeLanguage);
+  const isKn = activeLanguage === 'KN';
 
   // Auto scroll to bottom
   const scrollToBottom = () => {
@@ -34,20 +38,24 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
 
   // When active monument changes, reset greeting message tailored to that site
   useEffect(() => {
+    const greetingText = isKn 
+      ? `ನಮಸ್ಕಾರ! ನಾನು ${activeMonument.kannadaName || activeMonument.name} ಬಗ್ಗೆ ವಿಶೇಷಜ್ಞತೆ ಹೊಂದಿರುವ AI ಇತಿಹಾಸ ಮಾರ್ಗದರ್ಶಿ. ೬ನೇ ಶತಮಾನದ ಬಾದಾಮಿ ಚಾಳುಕ್ಯರ ಶಿಲ್ಪಕಲೆ, ಶಾಸನಗಳು ಹಾಗೂ ಇತಿಹಾಸದ ಬಗ್ಗೆ ಪ್ರಶ್ನೆ ಕೇಳಿ.`
+      : `Namaskara! I am your AI Heritage Guide specialized in ${activeMonument.name}. Ask me about its 6th-century rock-cut architecture, royal Chalukyan patrons, Sanskrit/Kannada epigraphs, or visiting logistics in Bagalkote.`;
+
     const greeting = {
       id: 'greeting',
       sender: 'ai',
-      monumentContext: activeMonument.name,
-      timestamp: 'Just now',
-      text: `Namaskara! I am your AI Heritage Guide specialized in ${activeMonument.name}. Ask me about its 6th-century rock-cut architecture, royal Chalukyan patrons, Sanskrit/Kannada epigraphs, or visiting logistics in Bagalkote.`,
+      monumentContext: isKn ? (activeMonument.kannadaName || activeMonument.name) : activeMonument.name,
+      timestamp: isKn ? 'ಈಗಷ್ಟೇ' : 'Just now',
+      text: greetingText,
       keyPoints: [
-        `Architectural style: ${activeMonument.architecturalStyle}`,
-        `Historic era: ${activeMonument.period}`,
-        `Location: ${activeMonument.location}`
+        `${isKn ? 'ವಾಸ್ತು ಶೈಲಿ' : 'Architectural style'}: ${activeMonument.architecturalStyle}`,
+        `${isKn ? 'ಐತಿಹಾಸಿಕ ಕಾಲ' : 'Historic era'}: ${activeMonument.period}`,
+        `${isKn ? 'ಸ್ಥಳ' : 'Location'}: ${activeMonument.location}`
       ]
     };
     setMessages([greeting]);
-  }, [activeMonument]);
+  }, [activeMonument, activeLanguage]);
 
   // Contextual question suggestions based on active monument
   const getSuggestions = () => {
@@ -179,6 +187,22 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 pb-20">
       
+      {/* Top Header / Back Navigation */}
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() => navigateTo('home')}
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-umber hover:text-terracotta transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{t.backToHome}</span>
+        </button>
+
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-terracotta/10 text-terracotta border border-terracotta/30 text-xs font-bold shadow-2xs">
+          <Sparkles className="w-3.5 h-3.5 text-terracotta" />
+          {t.interactiveBadge}
+        </span>
+      </div>
+
       {/* Contextual Monument Header */}
       <div className="bg-canvas-card rounded-2xl p-4 sm:p-5 border border-sandstone-300 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -188,12 +212,12 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-terracotta">
-                Contextual AI Guide
+                {t.contextualAiGuide}
               </span>
-              <span className="text-[10px] text-umber-light font-mono">• Bagalkote Circuit</span>
+              <span className="text-[10px] text-umber-light font-mono">• {t.district}</span>
             </div>
             <h2 className="font-serif font-bold text-base sm:text-lg text-umber line-clamp-1">
-              {activeMonument.name}
+              {isKn ? (activeMonument.kannadaName || activeMonument.name) : activeMonument.name}
             </h2>
           </div>
         </div>
@@ -206,12 +230,12 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
               const selected = HERITAGE_MONUMENTS.find(m => m.id === e.target.value);
               if (selected) setActiveMonument(selected);
             }}
-            aria-label="Switch Active Monument Context"
+            aria-label={t.switchContext}
             className="w-full sm:w-64 appearance-none bg-canvas text-umber text-xs font-semibold px-3.5 py-2 pr-8 rounded-stone border border-sandstone-400 focus:outline-none focus:ring-2 focus:ring-terracotta"
           >
             {HERITAGE_MONUMENTS.map((m) => (
               <option key={m.id} value={m.id}>
-                📍 {m.name}
+                📍 {isKn ? (m.kannadaName || m.name) : m.name}
               </option>
             ))}
           </select>
@@ -232,7 +256,7 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
         {isTyping && (
           <div className="flex items-center gap-2 text-xs text-umber-light italic pl-12">
             <Sparkles className="w-3.5 h-3.5 text-gold animate-spin" />
-            <span>AI is consulting Chalukyan epigraphical archives...</span>
+            <span>{isKn ? 'AI ಮಾಹಿತಿಯನ್ನು ಸಂಯೋಜಿಸುತ್ತಿದೆ...' : 'AI is consulting Chalukyan archives...'}</span>
           </div>
         )}
 
@@ -257,7 +281,7 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
           type="text"
           value={inputQuery}
           onChange={(e) => setInputQuery(e.target.value)}
-          placeholder={`Ask about ${activeMonument.name} carvings, history, epigraphs...`}
+          placeholder={t.askPlaceholder}
           className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-umber placeholder:text-sandstone-600 focus:outline-none"
         />
 
@@ -266,7 +290,7 @@ export default function AskAiPage({ initialMonument, navigateTo }) {
           disabled={!inputQuery.trim() || isTyping}
           className="px-4 py-2.5 rounded-stone bg-terracotta hover:bg-terracotta-deep disabled:opacity-40 text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm transition-all"
         >
-          <span>Ask</span>
+          <span>{t.send}</span>
           <Send className="w-3.5 h-3.5" />
         </button>
       </form>

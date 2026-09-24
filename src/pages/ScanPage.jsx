@@ -5,6 +5,8 @@ import ScanningAnimation from '../components/scan/ScanningAnimation';
 import ScanFailureModal from '../components/scan/ScanFailureModal';
 import Button from '../components/common/Button';
 import { analyzeMonument, simulateAiAnalysis } from '../services/aiService';
+import { getTranslation } from '../data/translations';
+
 // Helper to request approximate browser location without blocking
 function getApproximateLocation(timeoutMs = 3000) {
   return new Promise((resolve) => {
@@ -32,11 +34,12 @@ function getApproximateLocation(timeoutMs = 3000) {
   });
 }
 
-export default function ScanPage({ onScanSuccess, navigateTo }) {
+export default function ScanPage({ onScanSuccess, navigateTo, activeLanguage = 'EN' }) {
   // State: 'idle' | 'selected' | 'scanning' | 'failure'
   const [scanState, setScanState] = useState('idle');
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentStage, setCurrentStage] = useState(null);
+  const t = getTranslation(activeLanguage);
 
   // Handle image selected via upload
   const handleImageSelected = (imgData) => {
@@ -113,12 +116,12 @@ export default function ScanPage({ onScanSuccess, navigateTo }) {
           className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-umber hover:text-terracotta transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Home</span>
+          <span>{t.backToHome}</span>
         </button>
 
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-gold/15 text-gold-deep border border-gold/40 text-xs font-bold shadow-2xs">
           <Sparkles className="w-3.5 h-3.5 text-gold" />
-          AI Vision Multimodal Lens
+          {t.aiLensBadge}
         </span>
       </div>
 
@@ -128,6 +131,7 @@ export default function ScanPage({ onScanSuccess, navigateTo }) {
           onImageSelected={handleImageSelected}
           onSampleSelected={handleSampleSelected}
           onTriggerFailureDemo={handleTriggerFailureDemo}
+          activeLanguage={activeLanguage}
         />
       )}
 
@@ -138,17 +142,17 @@ export default function ScanPage({ onScanSuccess, navigateTo }) {
           <div className="flex items-center justify-between border-b border-sandstone-300 pb-3">
             <div>
               <h3 className="font-serif font-bold text-lg text-umber">
-                Monument Image Selected
+                {t.monumentSelected}
               </h3>
               <p className="text-xs text-umber-light">
-                Ready to run Chalukyan architectural feature extraction
+                {t.readyToAnalyze}
               </p>
             </div>
             <button
               onClick={handleReset}
               className="text-xs text-terracotta hover:underline font-semibold"
             >
-              Choose Different
+              {t.chooseDifferent}
             </button>
           </div>
 

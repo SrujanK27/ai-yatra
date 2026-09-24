@@ -1,6 +1,10 @@
+import React from 'react';
 import { Sparkles, MapPin, Compass } from 'lucide-react';
+import { getTranslation } from '../../data/translations';
 
-export default function Footer({ navigateTo }) {
+export default function Footer({ navigateTo, activeLanguage = 'EN' }) {
+  const t = getTranslation(activeLanguage);
+
   return (
     <footer className="bg-umber text-sandstone-100 pt-6 pb-20 md:pt-10 md:pb-10 border-t-2 border-gold/30 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,18 +23,18 @@ export default function Footer({ navigateTo }) {
                   AI Yatra
                 </span>
                 <span className="text-[10px] md:text-xs font-semibold text-gold-light tracking-wide block">
-                  ಬಾಗಲಕೋಟೆ ಪರಂಪರೆ • Bagalkote Heritage
+                  {t.district} • {t.subtitle}
                 </span>
               </div>
             </div>
 
             <p className="text-xs text-sandstone-300 max-w-md leading-relaxed hidden sm:block">
-              Bridging the monolithic 6th-century rock-cut architecture of the Badami Chalukyas with predictive AI vision intelligence and contextual storytelling.
+              {t.footerDesc}
             </p>
 
             <div className="flex items-center gap-1.5 text-[11px] text-gold-light">
               <Sparkles className="w-3.5 h-3.5 text-gold shrink-0" />
-              <span>Calibrated with ASI historical epigraphy</span>
+              <span>{t.footerASI}</span>
             </div>
           </div>
 
@@ -38,32 +42,32 @@ export default function Footer({ navigateTo }) {
           <div>
             <h4 className="font-serif text-xs md:text-sm font-semibold text-sandstone-50 mb-2 md:mb-3 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-terracotta-light shrink-0" />
-              Circuit
+              {t.footerCircuitTitle}
             </h4>
             <ul className="space-y-1.5 text-[11px] md:text-xs text-sandstone-300">
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left line-clamp-1">
-                  Badami Caves & Fort
+                  {activeLanguage === 'KN' ? 'ಬಾದಾಮಿ ಗುಹೆಗಳು ಮತ್ತು ಕೋಟೆ' : 'Badami Caves & Fort'}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left line-clamp-1">
-                  Pattadakal (UNESCO)
+                  {activeLanguage === 'KN' ? 'ಪಟ್ಟದಕಲ್ಲು (ಯುನೆಸ್ಕೋ)' : 'Pattadakal (UNESCO)'}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left line-clamp-1">
-                  Aihole Apsidal Complex
+                  {activeLanguage === 'KN' ? 'ಐಹೊಳೆ ದುರ್ಗಾ ಸಂಕೀರ್ಣ' : 'Aihole Apsidal Complex'}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left line-clamp-1">
-                  Mahakuta Sacred Pool
+                  {activeLanguage === 'KN' ? 'ಮಹಾಕೂಟ ಪುಷ್ಕರಣಿ' : 'Mahakuta Sacred Pool'}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left line-clamp-1">
-                  Kudalasangama
+                  {activeLanguage === 'KN' ? 'ಕೂಡಲಸಂಗಮ' : 'Kudalasangama'}
                 </button>
               </li>
             </ul>
@@ -73,27 +77,27 @@ export default function Footer({ navigateTo }) {
           <div>
             <h4 className="font-serif text-xs md:text-sm font-semibold text-sandstone-50 mb-2 md:mb-3 flex items-center gap-1">
               <Compass className="w-3.5 h-3.5 text-terracotta-light shrink-0" />
-              Navigation
+              {t.footerNavTitle}
             </h4>
             <ul className="space-y-1.5 text-[11px] md:text-xs text-sandstone-300">
               <li>
                 <button onClick={() => navigateTo('home')} className="hover:text-gold-light transition-colors text-left">
-                  Home
+                  {t.home}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('scan')} className="hover:text-gold-light transition-colors text-left">
-                  Scan Monument
+                  {t.scanMonument}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('explore')} className="hover:text-gold-light transition-colors text-left">
-                  Explore Sites
+                  {t.exploreCircuit}
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('ask-ai')} className="hover:text-gold-light transition-colors text-left">
-                  Ask AI Guide
+                  {t.askAi}
                 </button>
               </li>
             </ul>
@@ -104,7 +108,7 @@ export default function Footer({ navigateTo }) {
         {/* Bottom Bar: Compact copyright */}
         <div className="pt-3 md:pt-4 border-t border-sandstone-400/20 text-center sm:text-left text-[10px] sm:text-xs text-sandstone-400">
           <p>
-            © {new Date().getFullYear()} AI Yatra • Dedicated to the stone craftsmen of Bagalkote, Karnataka.
+            {t.footerCopyright}
           </p>
         </div>
       </div>

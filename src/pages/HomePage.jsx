@@ -5,9 +5,11 @@ import SectionHeader from '../components/common/SectionHeader';
 import CategoryChip from '../components/common/CategoryChip';
 import HeritageCard from '../components/heritage/HeritageCard';
 import Button from '../components/common/Button';
+import { getTranslation } from '../data/translations';
 
-export default function HomePage({ navigateTo, onSelectMonument }) {
+export default function HomePage({ navigateTo, onSelectMonument, activeLanguage = 'EN' }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const t = getTranslation(activeLanguage);
 
   const filteredMonuments = selectedCategory === 'all'
     ? HERITAGE_MONUMENTS
@@ -29,17 +31,17 @@ export default function HomePage({ navigateTo, onSelectMonument }) {
           {/* Eyebrow Pill */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-sandstone-200/90 border border-sandstone-400/80 text-xs font-semibold text-umber shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-terracotta animate-ping" />
-            <span>Bagalkote Heritage Tourism & AI Lens</span>
+            <span>{t.heroBadge}</span>
           </div>
 
           {/* Main Headline */}
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-umber tracking-tight leading-[1.15]">
-            Unlock the Living Stones of the <span className="text-terracotta italic">Badami Chalukyas</span>
+            {t.heroTitle}
           </h1>
 
           {/* Subtext */}
           <p className="text-sm sm:text-lg text-umber-light max-w-2xl mx-auto leading-relaxed">
-            Scan ancient rock-cut cave temples, decode 6th-century Kannada epigraphs, and listen to immersive architectural audio guides across Badami, Pattadakal, and Aihole.
+            {t.heroSubtitle}
           </p>
 
           {/* Core Action Triggers */}
@@ -51,7 +53,7 @@ export default function HomePage({ navigateTo, onSelectMonument }) {
               onClick={() => navigateTo('scan')}
               className="w-full sm:w-auto shadow-terracotta-glow"
             >
-              Scan Monument with AI
+              {t.scanNow}
             </Button>
 
             <Button
@@ -61,7 +63,7 @@ export default function HomePage({ navigateTo, onSelectMonument }) {
               onClick={() => navigateTo('explore')}
               className="w-full sm:w-auto"
             >
-              Explore Bagalkote Sites
+              {t.exploreCircuit}
             </Button>
           </div>
 
@@ -254,6 +256,7 @@ export default function HomePage({ navigateTo, onSelectMonument }) {
               key={monument.id}
               monument={monument}
               onSelect={onSelectMonument}
+              activeLanguage={activeLanguage}
             />
           ))}
         </div>
