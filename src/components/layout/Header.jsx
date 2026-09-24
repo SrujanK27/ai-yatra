@@ -1,19 +1,19 @@
 import React from 'react';
-import { Camera, Compass, MessageSquareQuote, Sparkles } from 'lucide-react';
+import { Camera, Compass, Sparkles } from 'lucide-react';
 import { getTranslation } from '../../data/translations';
 
 export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN', setLanguage }) {
   const t = getTranslation(activeLanguage);
+  const isKn = activeLanguage === 'KN';
 
   const navItems = [
     { id: 'home', label: t.home },
     { id: 'scan', label: t.scanHeritage, icon: Camera },
     { id: 'explore', label: t.exploreBagalkote, icon: Compass },
-    { id: 'ask-ai', label: t.askAi, icon: MessageSquareQuote },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-sandstone-50/95 backdrop-blur-md border-b border-sandstone-300 transition-colors">
+    <header className={`sticky top-0 z-40 bg-sandstone-50/95 backdrop-blur-md border-b border-sandstone-300 transition-colors ${isKn ? 'font-kannada' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
@@ -64,14 +64,14 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
 
           {/* Right Action: Language toggle & Scan Shortcut */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Language Switcher */}
-            <div className="flex items-center bg-canvas-card p-0.5 rounded-stone border border-sandstone-400/60 text-xs font-semibold">
+            {/* Sleek Language Switcher */}
+            <div className="flex items-center bg-sandstone-200/90 p-1 rounded-full border border-sandstone-300/90 shadow-inner text-xs font-semibold">
               <button
                 onClick={() => setLanguage && setLanguage('EN')}
-                className={`px-2.5 py-1 rounded-sm transition-all ${
+                className={`px-3 py-1 rounded-full transition-all duration-200 ${
                   activeLanguage === 'EN'
-                    ? 'bg-umber text-white shadow-sm'
-                    : 'text-umber hover:text-terracotta'
+                    ? 'bg-umber text-white shadow-sm font-bold scale-[1.02]'
+                    : 'text-umber-light hover:text-umber'
                 }`}
                 aria-label="English Language"
               >
@@ -79,10 +79,10 @@ export default function Header({ currentRoute, navigateTo, activeLanguage = 'EN'
               </button>
               <button
                 onClick={() => setLanguage && setLanguage('KN')}
-                className={`px-2.5 py-1 rounded-sm transition-all font-sans ${
+                className={`px-3 py-1 rounded-full transition-all duration-200 font-sans ${
                   activeLanguage === 'KN'
-                    ? 'bg-umber text-white shadow-sm'
-                    : 'text-umber hover:text-terracotta'
+                    ? 'bg-umber text-white shadow-sm font-bold scale-[1.02]'
+                    : 'text-umber-light hover:text-umber'
                 }`}
                 aria-label="Kannada Language"
               >

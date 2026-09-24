@@ -27,12 +27,6 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
         <div className="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10 space-y-6">
-          
-          {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-pill bg-sandstone-200/90 border border-sandstone-400/80 text-xs font-semibold text-umber shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-terracotta animate-ping" />
-            <span>{t.heroBadge}</span>
-          </div>
 
           {/* Main Headline */}
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-umber tracking-tight leading-[1.15]">
@@ -71,26 +65,26 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
           <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-6 max-w-lg mx-auto border-t border-sandstone-300 text-center">
             <div className="p-2">
               <span className="font-serif font-bold text-xl sm:text-2xl text-terracotta block">
-                120+
+                {t.stat1Count}
               </span>
               <span className="text-[11px] text-umber-light font-medium">
-                Chalukya Temples
+                {t.stat1Label}
               </span>
             </div>
             <div className="p-2 border-x border-sandstone-300">
               <span className="font-serif font-bold text-xl sm:text-2xl text-gold-deep block">
-                UNESCO
+                {t.stat2Count}
               </span>
               <span className="text-[11px] text-umber-light font-medium">
-                Coronation Site
+                {t.stat2Label}
               </span>
             </div>
             <div className="p-2">
               <span className="font-serif font-bold text-xl sm:text-2xl text-umber block">
-                100%
+                {t.stat3Count}
               </span>
               <span className="text-[11px] text-umber-light font-medium">
-                AI Vision Calibrated
+                {t.stat3Label}
               </span>
             </div>
           </div>
@@ -111,32 +105,32 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
               <Camera className="w-6 h-6" />
             </div>
             <h3 className="font-serif font-bold text-lg text-umber mb-1 group-hover:text-terracotta transition-colors">
-              AI Monument Scanner
+              {t.card1Title}
             </h3>
             <p className="text-xs text-umber-light mb-4 leading-relaxed">
-              Snap any carving or facade. Identify dynasties, patrons, and Vesara architectural elements in seconds.
+              {t.card1Desc}
             </p>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-terracotta group-hover:translate-x-1 transition-transform">
-              Start Scan <ArrowRight className="w-3.5 h-3.5" />
+              {t.card1Btn} <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
 
-          {/* Card 2: Contextual Chat */}
+          {/* Card 2: Heritage Audio Guide */}
           <div 
-            onClick={() => navigateTo('ask-ai')}
+            onClick={() => navigateTo('explore')}
             className="group bg-canvas-card rounded-2xl p-6 border border-sandstone-300 hover:border-gold hover:shadow-warm-md transition-all cursor-pointer relative overflow-hidden"
           >
             <div className="w-12 h-12 rounded-xl bg-gold/20 text-gold-dark flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-gold group-hover:text-umber transition-all">
-              <MessageSquareQuote className="w-6 h-6" />
+              <Volume2 className="w-6 h-6" />
             </div>
             <h3 className="font-serif font-bold text-lg text-umber mb-1 group-hover:text-gold-deep transition-colors">
-              Ask AI Heritage Guide
+              {t.card2Title}
             </h3>
             <p className="text-xs text-umber-light mb-4 leading-relaxed">
-              Ask deep questions about rock-cut sculptures, 18-armed Nataraja mudras, and Sanskrit inscriptions.
+              {t.card2Desc}
             </p>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-gold-dark group-hover:translate-x-1 transition-transform">
-              Chat with Guide <ArrowRight className="w-3.5 h-3.5" />
+              {t.card2Btn} <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
 
@@ -149,13 +143,13 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
               <Compass className="w-6 h-6" />
             </div>
             <h3 className="font-serif font-bold text-lg text-umber mb-1 group-hover:text-umber transition-colors">
-              Explore Heritage Circuit
+              {t.card3Title}
             </h3>
             <p className="text-xs text-umber-light mb-4 leading-relaxed">
-              Filter destinations across Badami, Pattadakal, Aihole, Mahakuta, and Kudalasangama with audio guides.
+              {t.card3Desc}
             </p>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-umber group-hover:translate-x-1 transition-transform">
-              View Catalog <ArrowRight className="w-3.5 h-3.5" />
+              {t.card3Btn} <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
 
@@ -167,50 +161,50 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
         <div className="bg-umber text-sandstone-50 rounded-3xl p-6 sm:p-10 border border-gold/40 shadow-xl relative overflow-hidden">
           <div className="max-w-xl mb-8">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gold-light block mb-1">
-              Seamless Heritage Exploration
+              {t.howItWorksEyebrow}
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-sandstone-50">
-              How the AI Heritage Lens Works
+              {t.howItWorksTitle}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
             {/* Step 1 */}
             <div className="bg-sandstone-900/60 rounded-2xl p-5 border border-sandstone-700/80 space-y-3">
-              <div className="w-9 h-9 rounded-full bg-terracotta text-white flex items-center justify-center font-bold text-sm">
+              <div className="w-9 h-9 rounded-full bg-terracotta text-white flex items-center justify-center font-bold text-sm shadow-md">
                 1
               </div>
               <h4 className="font-serif font-bold text-base text-sandstone-50">
-                Snap or Upload Photo
+                {t.step1Title}
               </h4>
               <p className="text-xs text-sandstone-300 leading-relaxed">
-                Take a photo of any facade, cliff carving, or temple shikhara while visiting Bagalkote.
+                {t.step1Desc}
               </p>
             </div>
 
             {/* Step 2 */}
             <div className="bg-sandstone-900/60 rounded-2xl p-5 border border-sandstone-700/80 space-y-3">
-              <div className="w-9 h-9 rounded-full bg-gold text-umber font-bold text-sm">
+              <div className="w-9 h-9 rounded-full bg-gold text-sandstone-950 flex items-center justify-center font-bold text-sm shadow-md">
                 2
               </div>
               <h4 className="font-serif font-bold text-base text-sandstone-50">
-                Instant Architecture Analysis
+                {t.step2Title}
               </h4>
               <p className="text-xs text-sandstone-300 leading-relaxed">
-                AI Vision extracts stone contours, identifies dynastic period, architectural styles, and patrons.
+                {t.step2Desc}
               </p>
             </div>
 
             {/* Step 3 */}
             <div className="bg-sandstone-900/60 rounded-2xl p-5 border border-sandstone-700/80 space-y-3">
-              <div className="w-9 h-9 rounded-full bg-terracotta-light text-umber font-bold text-sm">
+              <div className="w-9 h-9 rounded-full bg-terracotta-dark text-white flex items-center justify-center font-bold text-sm shadow-md">
                 3
               </div>
               <h4 className="font-serif font-bold text-base text-sandstone-50">
-                Audio Guide & Contextual AI
+                {t.step3Title}
               </h4>
               <p className="text-xs text-sandstone-300 leading-relaxed">
-                Listen to voice narrations in English/Kannada and ask follow-up questions tailored to that exact site.
+                {t.step3Desc}
               </p>
             </div>
           </div>
@@ -220,9 +214,9 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
       {/* Featured Bagalkote Destinations */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          eyebrow="Curated Heritage Destinations"
-          title="Monuments of the Malaprabha Valley"
-          subtitle="Explore the rock-cut sanctuaries and structural stone temples that defined medieval South Indian architecture."
+          eyebrow={t.curatedEyebrow}
+          title={t.curatedTitle}
+          subtitle={t.curatedSubtitle}
           action={
             <Button
               variant="outline"
@@ -231,7 +225,7 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
               iconPosition="right"
               onClick={() => navigateTo('explore')}
             >
-              Explore All {HERITAGE_MONUMENTS.length} Sites
+              {t.exploreAll}
             </Button>
           }
         />
@@ -267,13 +261,13 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
         <div className="bg-sandstone-200 rounded-2xl p-6 sm:p-8 border border-sandstone-300 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center sm:text-left">
             <span className="text-[11px] font-bold uppercase tracking-widest text-terracotta">
-              Historical Timeline
+              {t.timelineEyebrow}
             </span>
             <h3 className="font-serif font-bold text-xl sm:text-2xl text-umber">
-              Early Chalukyas of Vatapi (543 – 753 CE)
+              {t.timelineTitle}
             </h3>
             <p className="text-xs sm:text-sm text-umber-light max-w-xl leading-relaxed">
-              From Pulakeshin I's red sandstone hill fortress at Vatapi (Badami) to Queen Lokamahadevi's UNESCO masterpiece at Pattadakal, explore the cradle of Indian architecture.
+              {t.timelineDesc}
             </p>
           </div>
 
@@ -282,7 +276,7 @@ export default function HomePage({ navigateTo, onSelectMonument, activeLanguage 
             onClick={() => navigateTo('explore')}
             className="shrink-0"
           >
-            Explore Timeline
+            {t.exploreTimeline}
           </Button>
         </div>
       </section>

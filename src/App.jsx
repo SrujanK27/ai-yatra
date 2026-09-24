@@ -5,29 +5,87 @@ import MobileNav from './components/layout/MobileNav';
 import HomePage from './pages/HomePage';
 import ScanPage from './pages/ScanPage';
 import ResultPage from './pages/ResultPage';
-import AskAiPage from './pages/AskAiPage';
 import ExplorePage from './pages/ExplorePage';
 import { HERITAGE_MONUMENTS } from './data/heritageData';
 
 export default function App() {
-  // Navigation State
-  const [currentRoute, setCurrentRoute] = useState('home'); // 'home' | 'scan' | 'result' | 'ask-ai' | 'explore'
-  const [selectedMonument, setSelectedMonument] = useState(HERITAGE_MONUMENTS[0]);
-  const [scanVerification, setScanVerification] = useState(null);
-  const [scannedImage, setScannedImage] = useState(null);
-  const [activeLanguage, setActiveLanguage] = useState('EN');
+  // Navigation State with persistent Session Storage
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    return sessionStorage.getItem('ai_yatra_route') || 'home';
+  });
+
+  const [selectedMonument, setSelectedMonument] = useState(() => {
+    const savedId = sessionStorage.getItem('ai_yatra_monument_id');
+    if (savedId) {
+      const found = HERITAGE_MONUMENTS.find(m => m.id === savedId);
+      if (found) return found;
+    }
+    return HERITAGE_MONUMENTS[0];
+  });
+
+  const [scanVerification, setScanVerification] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('ai_yatra_verification');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [scannedImage, setScannedImage] = useState(() => {
+    return sessionStorage.getItem('ai_yatra_scanned_img') || null;
+  });
+
+  const [activeLanguage, setActiveLanguage] = useState(() => {
+    return localStorage.getItem('ai_yatra_lang') || 'EN';
+  });
+
+  // Keep Session Storage synchronized on every state change
+  useEffect(() => {
+    sessionStorage.setItem('ai_yatra_route', currentRoute);
+  }, [currentRoute]);
+
+  useEffect(() => {
+    if (selectedMonument?.id) {
+      sessionStorage.setItem('ai_yatra_monument_id', selectedMonument.id);
+    }
+  }, [selectedMonument]);
+
+  useEffect(() => {
+    if (scanVerification) {
+      try {
+        sessionStorage.setItem('ai_yatra_verification', JSON.stringify(scanVerification));
+      } catch (e) {}
+    } else {
+      sessionStorage.removeItem('ai_yatra_verification');
+    }
+  }, [scanVerification]);
+
+  useEffect(() => {
+    if (scannedImage) {
+      try {
+        sessionStorage.setItem('ai_yatra_scanned_img', scannedImage);
+      } catch (e) {}
+    } else {
+      sessionStorage.removeItem('ai_yatra_scanned_img');
+    }
+  }, [scannedImage]);
+
+  useEffect(() => {
+    localStorage.setItem('ai_yatra_lang', activeLanguage);
+  }, [activeLanguage]);
 
   // Handle browser & mobile hardware back button
   useEffect(() => {
-    // Replace initial state
-    window.history.replaceState({ route: 'home' }, '', '');
+    const initRoute = sessionStorage.getItem('ai_yatra_route') || 'home';
+    window.history.replaceState({ route: initRoute }, '', '');
 
     const handlePopState = (event) => {
-      // Whenever mobile back is pressed, return to home or previous route
       if (event.state && event.state.route) {
         setCurrentRoute(event.state.route);
       } else {
-        setCurrentRoute('home');
+        const stored = sessionStorage.getItem('ai_yatra_route');
+        setCurrentRoute(stored || 'home');
       }
     };
 
@@ -60,18 +118,24 @@ export default function App() {
     navigateTo('result');
   };
 
-  // Called when user clicks "Ask AI about this monument"
-  const handleAskAiWithMonument = (monument) => {
-    setSelectedMonument(monument);
-    navigateTo('ask-ai');
-  };
-
   // Called when clicking a nearby attraction
-  const handleSelectNearby = (monumentId) => {
-    const target = HERITAGE_MONUMENTS.find(m => m.id === monumentId);
+  const handleSelectNearby = (att) => {
+    const monumentId = typeof att === 'string' ? att : att.id;
+    const attName = typeof att === 'object' ? att.name : monumentId;
+
+    const target = HERITAGE_MONUMENTS.find(
+      m => m.id === monumentId || m.name.toLowerCase().includes(monumentId.toLowerCase())
+    );
     if (target) {
       setSelectedMonument(target);
+      setScanVerification(null);
+      setScannedImage(null);
+      navigateTo('result');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Fallback: Open Google Maps search in new tab
+      const query = encodeURIComponent(`${attName}, Bagalkote, Karnataka`);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
     }
   };
 
@@ -110,16 +174,7 @@ export default function App() {
             aiVerification={scanVerification}
             scannedImage={scannedImage}
             navigateTo={navigateTo}
-            onAskAiWithMonument={handleAskAiWithMonument}
             onSelectNearby={handleSelectNearby}
-            activeLanguage={activeLanguage}
-          />
-        )}
-
-        {currentRoute === 'ask-ai' && (
-          <AskAiPage
-            initialMonument={selectedMonument}
-            navigateTo={navigateTo}
             activeLanguage={activeLanguage}
           />
         )}
@@ -133,8 +188,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Persistent Global Stitch Footer - Hidden on Scan and Ask AI pages as requested */}
-      {currentRoute !== 'scan' && currentRoute !== 'ask-ai' && (
+      {/* Persistent Global Stitch Footer - Hidden on Scan page */}
+      {currentRoute !== 'scan' && (
         <Footer navigateTo={navigateTo} activeLanguage={activeLanguage} />
       )}
 
@@ -148,3 +203,4 @@ export default function App() {
     </div>
   );
 }
+

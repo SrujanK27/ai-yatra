@@ -19,6 +19,18 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Rich Kannada Typography styling */
+  [lang="kn"], .font-kannada {
+    font-family: 'Anek Kannada', 'Noto Sans Kannada', sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .font-kannada-serif {
+    font-family: 'Noto Serif Kannada', 'Tiro Kannada', serif;
+    line-height: 1.55;
+  }
+
   h1, h2, h3, h4, .font-serif {
     font-family: 'Playfair Display', Georgia, serif;
   }
@@ -66,6 +78,44 @@
 
 /* Viewfinder laser */
 .scan-line {
-  background: linear-gradient(180deg, rgba(197, 155, 39, 0) 0%, rgba(184, 89, 46, 0.85) 50%, rgba(197, 155, 39, 0) 100%);
-  box-shadow: 0 0 15px #B8592E, 0 0 25px #C59B27;
+  background: linear-gradient(90deg, transparent 0%, #C59B27 20%, #FFE082 50%, #B8592E 80%, transparent 100%);
+  box-shadow: 0 0 12px #FFE082, 0 0 24px #C59B27, 0 0 36px #B8592E;
+}
+
+@keyframes scanUpDown {
+  0% {
+    top: 0%;
+    opacity: 0.9;
+  }
+  50% {
+    top: calc(100% - 4px);
+    opacity: 1;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.9;
+  }
+}
+
+.animate-scan-up-down {
+  animation: scanUpDown 2.2s ease-in-out infinite;
+}
+
+@keyframes pingSlow {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+}
+
+.animate-ping-slow {
+  animation: pingSlow 1.8s ease-in-out infinite;
 }

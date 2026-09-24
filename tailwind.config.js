@@ -57,6 +57,9 @@ export default {
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        kannada: ['"Anek Kannada"', '"Noto Sans Kannada"', 'sans-serif'],
+        'kannada-serif': ['"Noto Serif Kannada"', '"Tiro Kannada"', 'serif'],
+        'kannada-classical': ['"Tiro Kannada"', '"Noto Serif Kannada"', 'serif'],
       },
       boxShadow: {
         'warm-sm': '0 2px 8px rgba(61, 38, 25, 0.05)',

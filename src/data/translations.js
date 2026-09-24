@@ -8,7 +8,6 @@ export const TRANSLATIONS = {
     home: 'Home',
     scanHeritage: 'Scan Heritage',
     exploreBagalkote: 'Explore Bagalkote',
-    askAi: 'Ask AI',
     scanMonument: 'Scan Monument',
     subtitle: 'Chalukyan Heritage Lens',
     district: 'Bagalkote',
@@ -17,24 +16,76 @@ export const TRANSLATIONS = {
     mobileHome: 'Home',
     mobileScan: 'Scan',
     mobileExplore: 'Explore',
-    mobileAskAi: 'Ask AI',
 
     // Home Page
     heroBadge: 'AI Vision Heritage Lens',
     heroTitle: 'Explore the Rock-Cut Empire of the Chalukyas',
     heroSubtitle: 'Experience 6th-century Badami, Pattadakal, and Aihole through AI-powered visual epigraphy and instant monument intelligence.',
     scanNow: 'Scan Monument',
-    exploreCircuit: 'Explore Circuit',
+    exploreCircuit: 'Discover Heritage',
     featuredSites: 'Featured Bagalkote Heritage Sites',
     featuredSubtitle: 'Handcrafted stone sanctuaries spanning over six centuries of Badami Chalukyan mastery.',
     exploreAll: 'Explore All Sites',
     explore: 'Explore',
     quickGuide: 'AI Quick Guide',
 
+    // Micro Stats
+    stat1Count: '120+',
+    stat1Label: 'Chalukya Temples',
+    stat2Count: 'UNESCO',
+    stat2Label: 'Coronation Site',
+    stat3Count: '100%',
+    stat3Label: 'AI Vision Calibrated',
+
+    // 3 Feature Cards
+    card1Title: 'AI Monument Scanner',
+    card1Desc: 'Snap any carving or facade. Identify dynasties, patrons, and Vesara architectural elements in seconds.',
+    card1Btn: 'Start Camera Scan',
+    card2Title: 'Heritage Audio Guide',
+    card2Desc: 'Listen to bilingual voice narrations in English and Kannada detailing historical background and hidden facts.',
+    card2Btn: 'Explore Audio Guides',
+    card3Title: 'Discover Heritage Sites',
+    card3Desc: 'Filter destinations across Badami, Pattadakal, Aihole, Mahakuta, and Kudalasangama with GPS directions.',
+    card3Btn: 'View Catalog',
+
+    // 3-Step Guide
+    howItWorksEyebrow: 'Seamless Heritage Exploration',
+    howItWorksTitle: 'How the AI Heritage Lens Works',
+    step1Title: 'Snap or Upload Photo',
+    step1Desc: 'Take a photo of any facade, cliff carving, or temple shikhara while visiting Bagalkote.',
+    step2Title: 'Instant Architecture Analysis',
+    step2Desc: 'AI Vision extracts stone contours, identifies dynastic period, architectural styles, and patrons.',
+    step3Title: 'Audio Guide & Epigraphy',
+    step3Desc: 'Listen to bilingual voice narrations in English/Kannada and examine Sanskrit/Kannada epigraph translations.',
+
+    // Curated Section
+    curatedEyebrow: 'Curated Heritage Destinations',
+    curatedTitle: 'Monuments of the Malaprabha Valley',
+    curatedSubtitle: 'Explore the rock-cut sanctuaries and structural stone temples that defined medieval South Indian architecture.',
+
+    // Historical Timeline Banner
+    timelineEyebrow: 'Historical Timeline',
+    timelineTitle: 'Early Chalukyas of Vatapi (543 – 753 CE)',
+    timelineDesc: 'From Pulakeshin I\'s red sandstone hill fortress at Vatapi (Badami) to Queen Lokamahadevi\'s UNESCO masterpiece at Pattadakal, explore the cradle of Indian architecture.',
+    exploreTimeline: 'Explore Timeline',
+
     // Explore Page
-    exploreTitle: 'Bagalkote Heritage Circuit',
-    exploreDescription: 'Explore rock-cut cave sanctuaries, UNESCO World Heritage monuments, and sacred river ghats.',
-    searchPlaceholder: 'Search monuments, architectural styles, deities...',
+    exploreTitle: 'Bagalkote Heritage Catalog',
+    exploreSubtitle: 'Discover the rich stone heritage of Badami, Pattadakal, Aihole, Mahakuta, and Kudalasangama.',
+    searchPlaceholder: 'Search by monument name, carving, UNESCO site, or region...',
+    showingText: 'Showing',
+    monumentsInBagalkote: 'monuments in Bagalkote',
+    resetFilters: 'Reset all filters',
+    noMonumentsFound: 'No Monuments Found',
+    noMonumentsDesc: 'No sites matched your query. Try clearing filters or searching for Badami, Pattadakal, or Aihole.',
+    clearFiltersBtn: 'Clear Search & Filters',
+    townLabel: 'Town:',
+    sortLabel: 'Sort:',
+    sortFeatured: 'Featured Order',
+    sortUnesco: 'UNESCO Sites First',
+    sortAlpha: 'Alphabetical (A-Z)',
+
+    // Explore Page
     allMonuments: 'All Monuments',
     caves: 'Cave Temples',
     unesco: 'UNESCO Sites',
@@ -91,7 +142,7 @@ export const TRANSLATIONS = {
     switchContext: 'Switch Monument Context',
     askPlaceholder: 'Ask about inscriptions, architecture, or history...',
     send: 'Send',
-    suggestionsTitle: 'Suggested Questions for',
+    suggestionsTitle: 'Suggested Questions:',
     interactiveBadge: 'Interactive Heritage Guide',
     aiGuideWelcome: 'Namaskara! I am your AI Heritage Guide specialized in Bagalkote monuments.',
 
@@ -108,7 +159,6 @@ export const TRANSLATIONS = {
     home: 'ಮುಖಪುಟ',
     scanHeritage: 'ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
     exploreBagalkote: 'ಬಾಗಲಕೋಟೆ ಅನ್ವೇಷಣೆ',
-    askAi: 'AI ಮಾರ್ಗದರ್ಶಿ',
     scanMonument: 'ಸ್ಮಾರಕ ಸ್ಕ್ಯಾನ್',
     subtitle: 'ಬಾಗಲಕೋಟೆ • ಚಾಳುಕ್ಯ ಪರಂಪರೆ',
     district: 'ಬಾಗಲಕೋಟೆ',
@@ -117,24 +167,76 @@ export const TRANSLATIONS = {
     mobileHome: 'ಮುಖಪುಟ',
     mobileScan: 'ಸ್ಕ್ಯಾನ್',
     mobileExplore: 'ಅನ್ವೇಷಿಸಿ',
-    mobileAskAi: 'AI ಕೇಳಿ',
 
     // Home Page
     heroBadge: '🏛️ ಬಾಗಲಕೋಟೆ ಪರಂಪರೆ • AI ದೃಷ್ಟಿ',
     heroTitle: 'ಚಾಳುಕ್ಯರ ಶಿಲಾ ಸಾಮ್ರಾಜ್ಯವನ್ನು ಅನ್ವೇಷಿಸಿ',
     heroSubtitle: 'ಬಾದಾಮಿ, ಪಟ್ಟದಕಲ್ಲು, ಮತ್ತು ಐಹೊಳೆಯ ೬ನೇ ಶತಮಾನದ ಅದ್ಭುತ ಶಿಲ್ಪಕಲೆ ಹಾಗೂ ಇತಿಹಾಸವನ್ನು AI ಮೂಲಕ ಅರಿಯಿರಿ.',
     scanNow: 'ಸ್ಮಾರಕ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
-    exploreCircuit: 'ಪ್ರವಾಸಿ ತಾಣಗಳು',
+    exploreCircuit: 'ಪರಂಪರೆ ಅನ್ವೇಷಿಸಿ',
     featuredSites: 'ಪ್ರಮುಖ ಪಾರಂಪರಿಕ ತಾಣಗಳು',
     featuredSubtitle: 'ಚಾಳುಕ್ಯ ಶಿಲ್ಪಿಗಳ ಅದ್ಭುತ ಕೈಚಳಕದ ಐತಿಹಾಸಿಕ ತಾಣಗಳು.',
     exploreAll: 'ಎಲ್ಲಾ ತಾಣಗಳನ್ನು ವೀಕ್ಷಿಸಿ',
     explore: 'ವಿವರ ನೋಡಿ',
     quickGuide: 'AI ತ್ವರಿತ ವಿವರಣೆ',
 
+    // Micro Stats
+    stat1Count: '೧೨೦+',
+    stat1Label: 'ಚಾಳುಕ್ಯ ದೇವಾಲಯಗಳು',
+    stat2Count: 'ಯುನೆಸ್ಕೋ',
+    stat2Label: 'ಪಟ್ಟಾಭಿಷೇಕ ತಾಣ',
+    stat3Count: '೧೦೦%',
+    stat3Label: 'AI ದೃಷ್ಟಿ ಸಂಯೋಜಿತ',
+
+    // 3 Feature Cards
+    card1Title: 'AI ಸ್ಮಾರಕ ಸ್ಕ್ಯಾನರ್',
+    card1Desc: 'ಯಾವುದೇ ಶಿಲ್ಪ ಅಥವಾ ಗುಹೆಯ ಚಿತ್ರ ತೆಗೆಯಿರಿ. ರಾಜವಂಶ, ಕಾಲ ಮತ್ತು ವಾಸ್ತುಶಿಲ್ಪ ಶೈಲಿಯನ್ನು ಕ್ಷಣಾರ್ಧದಲ್ಲಿ ತಿಳಿಯಿರಿ.',
+    card1Btn: 'ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನ್ ಆರಂಭಿಸಿ',
+    card2Title: 'ಪಾರಂಪರಿಕ ಧ್ವನಿ ವಿವರಣೆ',
+    card2Desc: 'ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಅಧಿಕೃತ ಐತಿಹಾಸಿಕ ಧ್ವನಿ ವಿವರಣೆ ಮತ್ತು ವಿಶೇಷ ಮಾಹಿತಿಯನ್ನು ಆಲಿಸಿ.',
+    card2Btn: 'ಧ್ವನಿ ವಿವರಣೆ ಆಲಿಸಿ',
+    card3Title: 'ಪಾರಂಪರಿಕ ತಾಣಗಳನ್ನು ಅನ್ವೇಷಿಸಿ',
+    card3Desc: 'ಬಾದಾಮಿ, ಪಟ್ಟದಕಲ್ಲು, ಐಹೊಳೆ, ಮಹಾಕೂಟ ಮತ್ತು ಕೂಡಲಸಂಗಮದ ಪ್ರವಾಸಿ ತಾಣಗಳನ್ನು ಶೋಧಿಸಿ.',
+    card3Btn: 'ಪಟ್ಟಿ ವೀಕ್ಷಿಸಿ',
+
+    // 3-Step Guide
+    howItWorksEyebrow: 'ಸುಲಭ ಪಾರಂಪರಿಕ ಪರಿಶೋಧನೆ',
+    howItWorksTitle: 'AI ಹೆರಿಟೇಜ್ ಲೆನ್ಸ್ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ',
+    step1Title: '೧. ಫೋಟೋ ತೆಗೆಯಿರಿ ಅಥವಾ ಅಪ್ಲೋಡ್ ಮಾಡಿ',
+    step1Desc: 'ಬಾಗಲಕೋಟೆಯ ಸ್ಮಾರಕ, ಬಂಡೆ ಕೆತ್ತನೆ ಅಥವಾ ಗೋಪುರದ ಚಿತ್ರವನ್ನು ತೆಗೆಯಿರಿ.',
+    step2Title: '೨. ತ್ವರಿತ ವಾಸ್ತುಶಿಲ್ಪ ವಿಶ್ಲೇಷಣೆ',
+    step2Desc: 'ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆಯು ಶಿಲೆಯ ಆಕಾರ, ರಾಜವಂಶ, ಕಾಲ ಮತ್ತು ಶೈಲಿಯನ್ನು ಗುರುತಿಸುತ್ತದೆ.',
+    step3Title: '೩. ಧ್ವನಿ ವಿವರಣೆ ಮತ್ತು ಶಾಸನಗಳು',
+    step3Desc: 'ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಧ್ವನಿ ವಿವರಣೆ ಆಲಿಸಿ ಹಾಗೂ ಐತಿಹಾಸಿಕ ಶಾಸನಗಳ ಅರ್ಥ ತಿಳಿಯಿರಿ.',
+
+    // Curated Section
+    curatedEyebrow: 'ಆಯ್ದ ಪ್ರವಾಸಿ ತಾಣಗಳು',
+    curatedTitle: 'ಮಲಪ್ರಭಾ ಕಣಿವೆಯ ಸ್ಮಾರಕಗಳು',
+    curatedSubtitle: 'ದಕ್ಷಿಣ ಭಾರತದ ವಾಸ್ತುಶಿಲ್ಪಕ್ಕೆ ನಾಂದಿ ಹಾಡಿದ ಏಕಶಿಲಾ ಗುಹೆಗಳು ಹಾಗೂ ಐತಿಹಾಸಿಕ ದೇವಾಲಯಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.',
+
+    // Historical Timeline Banner
+    timelineEyebrow: 'ಐತಿಹಾಸಿಕ ಕಾಲಘಟ್ಟ',
+    timelineTitle: 'ವಾತಾಪಿಯ ಬಾದಾಮಿ ಚಾಳುಕ್ಯರು (ಕ್ರಿ.ಶ. ೫೪೩ – ೭೫೩)',
+    timelineDesc: 'ಪುಲಕೇಶಿ ೧ ರ ಕೆಂಪು ಮರಳುಗಲ್ಲಿನ ಕೋಟೆಯಿಂದ ಹಿಡಿದು ರಾಣಿ ಲೋಕಮಹಾದೇವಿಯ ಪಟ್ಟದಕಲ್ಲು ಮಹೋನ್ನತಿಯವರೆಗೆ ಭಾರತೀಯ ವಾಸ್ತುಶಿಲ್ಪದ ಉಗಮವನ್ನು ಅರಿಯಿರಿ.',
+    exploreTimeline: 'ಕಾಲರೇಖೆ ವೀಕ್ಷಿಸಿ',
+
     // Explore Page
-    exploreTitle: 'ಬಾಗಲಕೋಟೆ ಪಾರಂಪರಿಕ ತಾಣಗಳು',
-    exploreDescription: 'ಗುಹಾ ದೇವಾಲಯಗಳು, ಯುನೆಸ್ಕೋ ತಾಣಗಳು ಹಾಗೂ ಪವಿತ್ರ ನದಿ ತೀರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.',
-    searchPlaceholder: 'ಸ್ಮಾರಕ, ಶೈಲಿ ಅಥವಾ ಸ್ಥಳ ಹುಡುಕಿ...',
+    exploreTitle: 'ಬಾಗಲಕೋಟೆ ಪಾರಂಪರಿಕ ತಾಣಗಳ ಪಟ್ಟಿ',
+    exploreSubtitle: 'ಬಾದಾಮಿ, ಪಟ್ಟದಕಲ್ಲು, ಐಹೊಳೆ, ಮಹಾಕೂಟ ಮತ್ತು ಕೂಡಲಸಂಗಮದ ಶಿಲಾ ವೈಭವವನ್ನು ಅನ್ವೇಷಿಸಿ.',
+    searchPlaceholder: 'ಸ್ಮಾರಕದ ಹೆಸರು, ಕೆತ್ತನೆ, ಯುನೆಸ್ಕೋ ತಾಣ ಅಥವಾ ಊರು ಹುಡುಕಿ...',
+    showingText: 'ತೋರಿಸಲಾಗುತ್ತಿದೆ:',
+    monumentsInBagalkote: 'ಬಾಗಲಕೋಟೆಯ ಸ್ಮಾರಕಗಳು',
+    resetFilters: 'ಫಿಲ್ಟರ್ ತೆರವುಗೊಳಿಸಿ',
+    noMonumentsFound: 'ಯಾವುದೇ ಸ್ಮಾರಕಗಳು ಕಂಡುಬಂದಿಲ್ಲ',
+    noMonumentsDesc: 'ನಿಮ್ಮ ಹುಡುಕಾಟಕ್ಕೆ ತಕ್ಕ ಫಲಿತಾಂಶವಿಲ್ಲ. ಬಾದಾಮಿ, ಪಟ್ಟದಕಲ್ಲು ಅಥವಾ ಐಹೊಳೆ ಎಂದು ಹುಡುಕಿ.',
+    clearFiltersBtn: 'ಹುಡುಕಾಟ ತೆರವುಗೊಳಿಸಿ',
+    townLabel: 'ಸ್ಥಳ:',
+    sortLabel: 'ವಿಂಗಡಿಸಿ:',
+    sortFeatured: 'ಪ್ರಮುಖ ತಾಣಗಳು',
+    sortUnesco: 'ಯುನೆಸ್ಕೋ ತಾಣಗಳು ಮೊದಲು',
+    sortAlpha: 'ವರ್ಣಮಾಲೆಯಂತೆ (ಅ-ಕ್ಷ)',
+
+    // Explore Page Categories
     allMonuments: 'ಎಲ್ಲಾ ಸ್ಮಾರಕಗಳು',
     caves: 'ಗುಹಾ ದೇವಾಲಯಗಳು',
     unesco: 'ಯುನೆಸ್ಕೋ ತಾಣಗಳು',

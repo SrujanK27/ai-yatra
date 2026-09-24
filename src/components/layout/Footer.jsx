@@ -95,11 +95,6 @@ export default function Footer({ navigateTo, activeLanguage = 'EN' }) {
                   {t.exploreCircuit}
                 </button>
               </li>
-              <li>
-                <button onClick={() => navigateTo('ask-ai')} className="hover:text-gold-light transition-colors text-left">
-                  {t.askAi}
-                </button>
-              </li>
             </ul>
           </div>
 

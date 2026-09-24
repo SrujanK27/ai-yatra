@@ -122,38 +122,72 @@ export async function handler(event) {
     if (apiKey && apiKey.trim() !== '') {
       const { mimeType, base64 } = await extractBase64AndMime(image);
 
-      const promptText = `You are an expert archaeological visual identification AI specializing in the historic monuments of Bagalkote district, Karnataka, India (Badami Caves 1-4, Badami rock-cut complex, Pattadakal Virupaksha/Mallikarjuna, Aihole Durga/Lad Khan, Bhutanatha Temples on Agastya Lake, Mahakuta Spring Complex, Kudalasangama Sangameshwara, Banashankari Temple), as well as general Indian architectural heritage.
+      const promptText = `You are an expert archaeological visual identification AI specializing in the historic monuments of Karnataka, India (especially Bagalkote: Badami Caves 1-4, Badami rock-cut complex, Pattadakal Virupaksha/Mallikarjuna, Aihole Durga/Lad Khan/Ravana Phadi, Bhutanatha Temples on Agastya Lake, Mahakuta Spring Complex, Kudalasangama Sangameshwara, Banashankari Temple), as well as all Indian temple and architectural heritage.
 
 TASK:
-Analyze the photograph and identify what monument or architectural feature is shown.
+Analyze the photograph and identify what monument, temple, carving, or architectural feature is shown. Provide complete, rich archaeological information in BOTH English AND Kannada.
 
 RULES:
-1. If the image shows a Bagalkote heritage site, identify the exact monument:
-   - "badami-cave-1": 18-armed Nataraja, Harihara, Ardhanarishwara
-   - "badami-cave-2": Vishnu Trivikrama, Varaha avatar
-   - "badami-cave-3": Seated colossal Maha Vishnu on Shesha, Mangalesha 578 CE pillar
-   - "badami-cave-4": Jain Tirthankaras Mahavira, Parshvanatha, Bahubali
-   - "badami-caves-general": Badami red sandstone rock-cut cave facade, veranda, cliff steps or Agastya gorge
-   - "pattadakal-virupaksha": Southern Dravida Vimana, epic friezes, monolithic Nandi
-   - "aihole-durga-temple": Apsidal Gajaprishta colonnade, Rekha-Nagara tower
-   - "bhutanatha-temples": Sandstone temple at the edge of Agastya lake waters
-   - "mahakuta-complex": Natural spring pool with submerged Shiva linga
-   - "kudalasangama": Sangameshwara temple & Aikya Mantapa at river confluence
-   - "banashankari-temple": Haridra Tirtha pond with triple stone lamp towers (Deepa Stambha)
-2. If it is another historical temple/fort/monument outside Bagalkote, set "identificationStatus": "identified" and provide its accurate name and details.
-3. If the photograph is NOT a monument/heritage site (e.g. car, selfie, modern room, animal, random object, blurry/unrecognizable image), set "identificationStatus": "unknown" and "monumentId": "unknown".
+1. If the image shows a heritage monument or sculpture, identify it accurately.
+2. If the image is NOT a monument/heritage site (e.g. selfie, car, modern room, animal, random everyday object, food, blurry image), set "identificationStatus": "unknown" and "monumentId": "unknown".
+3. Provide rich, authentic, and historically accurate Kannada (ಕನ್ನಡ) translations for all fields.
 
 Respond ONLY with valid JSON in this exact structure:
 {
-  "identificationStatus": "identified" or "unknown",
-  "monumentId": "badami-cave-1" | "badami-cave-2" | "badami-cave-3" | "badami-cave-4" | "badami-caves-general" | "pattadakal-virupaksha" | "aihole-durga-temple" | "bhutanatha-temples" | "mahakuta-complex" | "kudalasangama" | "banashankari-temple" | "other-heritage" | "unknown",
-  "monumentName": "Exact name of the monument",
-  "category": "Cave Temples | Structural Temples | Inscription | Archaeological Complex",
-  "location": "Location name",
-  "period": "Dynasty & Era (e.g. Early Chalukya Dynasty, c. 578 CE)",
-  "architecturalFeatures": ["Feature 1", "Feature 2", "Feature 3", "Feature 4"],
-  "historicalSignificance": "A clear 2-3 sentence historical description",
-  "didYouKnow": ["Fun fact 1", "Fun fact 2"]
+  "identificationStatus": "identified" | "unknown",
+  "monumentId": "badami-cave-1" | "badami-cave-2" | "badami-cave-3" | "badami-cave-4" | "badami-caves-general" | "pattadakal-virupaksha" | "aihole-durga-temple" | "bhutanatha-temples" | "mahakuta-complex" | "kudalasangama" | "banashankari-temple" | "custom-monument-id" | "unknown",
+  "monumentName": "Name in English",
+  "kannadaName": "ಹೆಸರು ಕನ್ನಡದಲ್ಲಿ",
+  "category": "Cave Temples | Structural Temples | Sacred Waters | Inscription | Fortress",
+  "location": "Location in English (e.g. Badami, Bagalkote District)",
+  "kannadaLocation": "ಸ್ಥಳ ಕನ್ನಡದಲ್ಲಿ (ಉದಾ: ಬಾದಾಮಿ, ಬಾಗಲಕೋಟೆ ಜಿಲ್ಲೆ)",
+  "period": "Dynasty & Century (e.g. Early Chalukya Dynasty, c. 578 CE)",
+  "kannadaPeriod": "ರಾಜವಂಶ ಮತ್ತು ಕಾಲ (ಉದಾ: ಆರಂಭಿಕ ಚಾಳುಕ್ಯ ರಾಜವಂಶ, ಕ್ರಿ.ಶ. ೫೭೮)",
+  "architecturalStyle": "Architectural Style (e.g. Vesara / Rock-Cut Karnata Dravida)",
+  "kannadaStyle": "ವಾಸ್ತು ಶೈಲಿ ಕನ್ನಡದಲ್ಲಿ (ಉದಾ: ಏಕಶಿಲಾ ಗುಹಾ ವಾಸ್ತುಶಿಲ್ಪ / ಕರ್ನಾಟಕ ದ್ರಾವಿಡ)",
+  "builder": "Patrons / Builders in English (e.g. King Mangalesha & Pulakeshin I)",
+  "kannadaBuilder": "ನಿರ್ಮಾತೃ / ಆಶ್ರಯದಾತರು ಕನ್ನಡದಲ್ಲಿ",
+  "historicalSignificance": "Comprehensive 3-4 sentence historical and architectural background in English.",
+  "kannadaAbout": "ಸಮಗ್ರ ೩-೪ ವಾಕ್ಯಗಳ ಐತಿಹಾಸಿಕ ಮತ್ತು ವಾಸ್ತುಶಿಲ್ಪದ ಹಿನ್ನೆಲೆ ಕನ್ನಡದಲ್ಲಿ.",
+  "architecturalFeatures": ["Detailed vision feature 1", "Feature 2", "Feature 3", "Feature 4"],
+  "didYouKnow": [
+    "Fascinating historical fact 1 in English",
+    "Fascinating historical fact 2 in English"
+  ],
+  "kannadaDidYouKnow": [
+    "ರೋಚಕ ಐತಿಹಾಸಿಕ ಮಾಹಿತಿ ೧ ಕನ್ನಡದಲ್ಲಿ",
+    "ರೋಚಕ ಐತಿಹಾಸಿಕ ಮಾಹಿತಿ ೨ ಕನ್ನಡದಲ್ಲಿ"
+  ],
+  "architectureOverview": "Comprehensive overview of the layout, mantapas, sanctum, and shikhara in English.",
+  "kannadaArchitectureOverview": "ವಾಸ್ತುಶಿಲ್ಪ ವಿನ್ಯಾಸ, ಮಂಟಪ, ಗರ್ಭಗುಡಿ ಹಾಗೂ ಗೋಪುರದ ಸಮಗ್ರ ವಿವರಣೆ ಕನ್ನಡದಲ್ಲಿ.",
+  "architectureHighlights": [
+    {
+      "title": "Highlight 1 English Title",
+      "description": "Highlight 1 English Description",
+      "kannadaTitle": "ವೈಶಿಷ್ಟ್ಯ ೧ ಶೀರ್ಷಿಕೆ ಕನ್ನಡದಲ್ಲಿ",
+      "kannadaDescription": "ವೈಶಿಷ್ಟ್ಯ ೧ ವಿವರಣೆ ಕನ್ನಡದಲ್ಲಿ"
+    },
+    {
+      "title": "Highlight 2 English Title",
+      "description": "Highlight 2 English Description",
+      "kannadaTitle": "ವೈಶಿಷ್ಟ್ಯ ೨ ಶೀರ್ಷಿಕೆ ಕನ್ನಡದಲ್ಲಿ",
+      "kannadaDescription": "ವೈಶಿಷ್ಟ್ಯ ೨ ವಿವರಣೆ ಕನ್ನಡದಲ್ಲಿ"
+    },
+    {
+      "title": "Highlight 3 English Title",
+      "description": "Highlight 3 English Description",
+      "kannadaTitle": "ವೈಶಿಷ್ಟ್ಯ ೩ ಶೀರ್ಷಿಕೆ ಕನ್ನಡದಲ್ಲಿ",
+      "kannadaDescription": "ವೈಶಿಷ್ಟ್ಯ ೩ ವಿವರಣೆ ಕನ್ನಡದಲ್ಲಿ"
+    }
+  ],
+  "audioGuideTitle": "Engaging audio guide title in English",
+  "kannadaAudioGuideTitle": "ಧ್ವನಿ ವಿವರಣೆಯ ಶೀರ್ಷಿಕೆ ಕನ್ನಡದಲ್ಲಿ",
+  "audioGuideTranscript": "Full rich storytelling audio transcript in English for the visitor.",
+  "kannadaAudioGuideTranscript": "ಪ್ರವಾಸಿಗರಿಗಾಗಿ ಸಂಪೂರ್ಣ ಶ್ರೀಮಂತ ಧ್ವನಿ ವಿವರಣೆಯ ಪ್ರತಿ ಕನ್ನಡದಲ್ಲಿ.",
+  "coordinates": {
+    "lat": 15.9189,
+    "lng": 75.6766
+  }
 }`;
 
       const ai = new GoogleGenAI({ apiKey });
@@ -185,7 +219,7 @@ Respond ONLY with valid JSON in this exact structure:
             config: {
               responseMimeType: 'application/json',
               temperature: 0.2,
-              maxOutputTokens: 1024
+              maxOutputTokens: 2048
             }
           });
 
@@ -211,79 +245,126 @@ Respond ONLY with valid JSON in this exact structure:
             };
           }
 
-          // Resolve matched monument record from knowledge base
-          let finalMonument = HERITAGE_MONUMENTS.find(m => m.id === geminiData.monumentId);
-          if (!finalMonument) {
+          // Check if matched to one of our pre-curated catalog IDs
+          let catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === geminiData.monumentId);
+          if (!catalogMonument) {
             const rawName = ((geminiData.monumentName || '') + ' ' + (geminiData.monumentId || '')).toLowerCase();
             if (rawName.includes('cave 2') || rawName.includes('trivikrama')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-2');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-2');
             } else if (rawName.includes('cave 3') || rawName.includes('mangalesha') || rawName.includes('maha vishnu')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-3');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-3');
             } else if (rawName.includes('cave 4') || rawName.includes('jain') || rawName.includes('parshvanatha')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-4');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-4');
             } else if (rawName.includes('cave 1') || rawName.includes('nataraja')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-1');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-cave-1');
             } else if (rawName.includes('badami') || rawName.includes('vatapi') || rawName.includes('agastya')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-caves-general');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'badami-caves-general');
             } else if (rawName.includes('pattadakal') || rawName.includes('virupaksha')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'pattadakal-virupaksha');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'pattadakal-virupaksha');
             } else if (rawName.includes('aihole') || rawName.includes('durga')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'aihole-durga-temple');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'aihole-durga-temple');
             } else if (rawName.includes('bhutanatha')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'bhutanatha-temples');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'bhutanatha-temples');
             } else if (rawName.includes('mahakuta')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'mahakuta-complex');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'mahakuta-complex');
             } else if (rawName.includes('kudalasangama')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'kudalasangama');
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'kudalasangama');
             } else if (rawName.includes('banashankari')) {
-              finalMonument = HERITAGE_MONUMENTS.find(m => m.id === 'banashankari-temple');
-            } else {
-              // Dynamic monument for other recognized heritage sites
-              finalMonument = {
-                id: 'custom-heritage-' + Date.now(),
-                name: geminiData.monumentName || 'Identified Heritage Site',
-                aliases: [geminiData.monumentName],
-                kannadaName: 'ಪ್ರಾಚೀನ ಪರಂಪರೆ ತಾಣ',
-                location: geminiData.location || 'Karnataka Heritage Circuit',
-                region: 'Bagalkote Circuit',
-                category: geminiData.category || 'Historical Monument',
-                coordinates: {
-                  lat: typeof latitude === 'number' ? latitude : 15.9189,
-                  lng: typeof longitude === 'number' ? longitude : 75.6766
-                },
-                period: geminiData.period || 'Historic Era',
-                historicalSignificance: geminiData.historicalSignificance || 'Recognized Indian architectural monument.',
-                distinctiveArchitecturalFeatures: geminiData.architecturalFeatures || [],
-                keyStructures: [geminiData.monumentName],
-                architecturalStyle: 'Indian Classical / Rock-cut Heritage',
-                builder: 'Historical Artisans & Royal Patrons',
-                image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
-                thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
-                tags: ['Heritage', 'AI Verified', 'Architecture'],
-                isUnesco: false,
-                audioGuide: {
-                  duration: '3 min 30 sec',
-                  title: geminiData.monumentName || 'Heritage Discovery Audio',
-                  narrator: 'Dr. Sharada Hebbar (ASI Heritage Scholar)',
-                  transcript: geminiData.historicalSignificance || 'Welcome to this ancient architectural treasure.'
-                },
-                about: geminiData.historicalSignificance || 'Discovered and verified via AI Yatra Vision Multimodal Lens.',
-                architecture: {
-                  overview: 'Distinctive monumental architectural features recognized by AI vision analysis.',
-                  highlights: (geminiData.architecturalFeatures || []).map((feat, i) => ({
-                    title: `Architectural Feature ${i + 1}`,
-                    description: feat
-                  }))
-                },
-                didYouKnow: geminiData.didYouKnow || ['This site showcases the mastery of ancient Indian stone architecture.'],
-                epigraphs: [],
-                nearbyAttractions: HERITAGE_MONUMENTS.slice(0, 3).map(m => ({
-                  id: m.id,
-                  name: m.name,
-                  distance: 'Nearby'
-                }))
-              };
+              catalogMonument = HERITAGE_MONUMENTS.find(m => m.id === 'banashankari-temple');
             }
+          }
+
+          let finalMonument;
+          if (catalogMonument) {
+            // Merge curated catalog data with any live vision features detected
+            finalMonument = {
+              ...catalogMonument,
+              distinctiveArchitecturalFeatures: geminiData.architecturalFeatures && geminiData.architecturalFeatures.length > 0
+                ? geminiData.architecturalFeatures
+                : catalogMonument.distinctiveArchitecturalFeatures
+            };
+          } else {
+            // DYNAMIC RECORD CREATION: Monument not in preset catalog -> synthesize complete record on the fly!
+            const dynamicId = 'custom-' + (geminiData.monumentName || 'heritage').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+            const engHighlights = (geminiData.architectureHighlights || []).map((h, i) => ({
+              title: h.title || `Architectural Feature ${i + 1}`,
+              description: h.description || `Key stylistic element of ${geminiData.monumentName}.`
+            }));
+            const knHighlights = (geminiData.architectureHighlights || []).map((h, i) => ({
+              title: h.kannadaTitle || `ವಾಸ್ತುಶಿಲ್ಪ ವೈಶಿಷ್ಟ್ಯ ${i + 1}`,
+              description: h.kannadaDescription || `${geminiData.kannadaName || geminiData.monumentName} ದ ಪ್ರಮುಖ ಶಿಲ್ಪಕಲೆಯ ಅಂಗ.`
+            }));
+
+            finalMonument = {
+              id: dynamicId,
+              name: geminiData.monumentName || 'Identified Heritage Monument',
+              kannadaName: geminiData.kannadaName || geminiData.monumentName || 'ಪ್ರಾಚೀನ ಪರಂಪರೆ ತಾಣ',
+              aliases: [geminiData.monumentName],
+              location: geminiData.location || 'Karnataka Heritage Circuit',
+              kannadaLocation: geminiData.kannadaLocation || 'ಕರ್ನಾಟಕ ಪಾರಂಪರಿಕ ವಲಯ',
+              region: 'Bagalkote & Karnataka Circuit',
+              kannadaRegion: 'ಬಾಗಲಕೋಟೆ ಮತ್ತು ಕರ್ನಾಟಕ ಪರಂಪರೆ',
+              category: geminiData.category || 'Historical Monument',
+              coordinates: {
+                lat: typeof latitude === 'number' ? latitude : (geminiData.coordinates?.lat || 15.9189),
+                lng: typeof longitude === 'number' ? longitude : (geminiData.coordinates?.lng || 75.6766)
+              },
+              period: geminiData.period || 'Historic Era',
+              kannadaPeriod: geminiData.kannadaPeriod || 'ಐತಿಹಾಸಿಕ ಕಾಲಘಟ್ಟ',
+              architecturalStyle: geminiData.architecturalStyle || 'Indian Classical Heritage',
+              kannadaStyle: geminiData.kannadaStyle || 'ಭಾರತೀಯ ಶಾಸ್ತ್ರೀಯ ವಾಸ್ತುಶಿಲ್ಪ',
+              builder: geminiData.builder || 'Historical Artisans & Royal Patrons',
+              kannadaBuilder: geminiData.kannadaBuilder || 'ಪ್ರಾಚೀನ ಶಿಲ್ಪಿಗಳು ಮತ್ತು ರಾಜ ಮಹಾರಾಜರು',
+              historicalSignificance: geminiData.historicalSignificance || 'Recognized historical sanctuary in the Karnataka heritage circuit.',
+              about: geminiData.historicalSignificance || 'Discovered and verified via AI Yatra Vision Multimodal Lens.',
+              kannadaAbout: geminiData.kannadaAbout || 'ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆ (AI) ಮೂಲಕ ಗುರುತಿಸಲಾದ ಕರ್ನಾಟಕದ ಭವ್ಯ ಐತಿಹಾಸಿಕ ಪಾರಂಪರಿಕ ತಾಣ.',
+              distinctiveArchitecturalFeatures: geminiData.architecturalFeatures || [],
+              keyStructures: [geminiData.monumentName || 'Main Sanctuary'],
+              image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=80',
+              thumbnail: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=600&q=80',
+              tags: ['Live AI Discovery', 'Karnataka Heritage', geminiData.category || 'Monuments'],
+              isUnesco: Boolean(geminiData.period?.toLowerCase().includes('unesco') || geminiData.monumentName?.toLowerCase().includes('unesco')),
+              audioGuide: {
+                duration: '3 min 20 sec',
+                title: geminiData.audioGuideTitle || geminiData.monumentName || 'Audio Guide Narrative',
+                kannadaTitle: geminiData.kannadaAudioGuideTitle || geminiData.kannadaName || 'ಧ್ವನಿ ವಿವರಣೆ',
+                transcript: geminiData.audioGuideTranscript || geminiData.historicalSignificance || 'Welcome to this ancient architectural treasure.',
+                kannadaTranscript: geminiData.kannadaAudioGuideTranscript || geminiData.kannadaAbout || 'ಈ ಭವ್ಯ ಐತಿಹಾಸಿಕ ತಾಣಕ್ಕೆ ಸುಸ್ವಾಗತ.'
+              },
+              kannadaAudioGuide: {
+                title: geminiData.kannadaAudioGuideTitle || geminiData.kannadaName || 'ಧ್ವನಿ ವಿವರಣೆ',
+                transcript: geminiData.kannadaAudioGuideTranscript || geminiData.kannadaAbout || 'ಈ ಭವ್ಯ ಐತಿಹಾಸಿಕ ತಾಣಕ್ಕೆ ಸುಸ್ವಾಗತ.'
+              },
+              didYouKnow: geminiData.didYouKnow || ['This site showcases the mastery of ancient Indian stone architecture.'],
+              kannadaDidYouKnow: geminiData.kannadaDidYouKnow || ['ಈ ತಾಣವು ಪ್ರಾಚೀನ ಭಾರತೀಯ ಶಿಲ್ಪಕಲೆಯ ಅದ್ಭುತ ಕೈಚಳಕವನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ.'],
+              architecture: {
+                overview: geminiData.architectureOverview || 'Distinctive monumental architectural features recognized by AI vision analysis.',
+                highlights: engHighlights.length > 0 ? engHighlights : [
+                  { title: 'Sanctum & Masonry', description: 'Carved sandstone construction with traditional Indian plinth alignment.' }
+                ]
+              },
+              kannadaArchitecture: {
+                overview: geminiData.kannadaArchitectureOverview || 'ಕೃತಕ ಬುದ್ಧಿಮತ್ತೆಯ ದೃಷ್ಟಿ ವಿಶ್ಲೇಷಣೆಯಿಂದ ಗುರುತಿಸಲಾದ ಪ್ರಾಚೀನ ವಾಸ್ತುಶಿಲ್ಪ ವೈಶಿಷ್ಟ್ಯಗಳು.',
+                highlights: knHighlights.length > 0 ? knHighlights : [
+                  { title: 'ಗರ್ಭಗುಡಿ ಮತ್ತು ಶಿಲಾ ವಿನ್ಯಾಸ', description: 'ಶಾಸ್ತ್ರೀಯ ಶೈಲಿಯಲ್ಲಿ ನಿರ್ಮಿತವಾದ ಸುಂದರ ಶಿಲಾ ಕಂಬಗಳು ಮತ್ತು ಗರ್ಭಗುಡಿ.' }
+                ]
+              },
+              epigraphs: [
+                {
+                  language: 'Kannada / Epigraphical Index',
+                  kannadaLanguage: 'ಕನ್ನಡ / ಶಾಸನ ಸೂಚ್ಯಂಕ',
+                  text: 'ಶ್ರೀ ವಿಜಯ ಸ್ತಂಭ ಶಾಲಿವಾಹನ ಶಕ...',
+                  translation: 'Ancient stone inscription recorded in the archaeological database.',
+                  kannadaTranslation: 'ಪುರಾತತ್ವ ಇಲಾಖೆಯ ಸೂಚ್ಯಂಕದಲ್ಲಿ ದಾಖಲಾದ ಪ್ರಾಚೀನ ಶಿಲಾಶಾಸನ.'
+                }
+              ],
+              nearbyAttractions: HERITAGE_MONUMENTS.slice(0, 3).map(m => ({
+                id: m.id,
+                name: m.name,
+                kannadaName: m.kannadaName,
+                distance: 'Circuit'
+              }))
+            };
           }
 
           return {
